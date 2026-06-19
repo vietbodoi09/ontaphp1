@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ôn tập Đường lối Quân sự – HUST</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⭐</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Be Vietnam Pro',sans-serif;background:#f0f2f5;color:#1a1a2e;min-height:100vh}
+  .app{max-width:680px;margin:0 auto;padding:16px 16px 40px}
+
+  /* ===== HOME ===== */
+  .home-header{text-align:center;padding:36px 0 28px}
+  .home-header .logo{width:56px;height:56px;background:linear-gradient(135deg,#c0392b,#e74c3c);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:28px;color:#fff;margin-bottom:14px;box-shadow:0 4px 16px rgba(192,57,43,.3)}
+  .home-header h1{font-size:21px;font-weight:800;line-height:1.35;color:#1a1a2e;letter-spacing:-.3px}
+  .home-header p{font-size:13px;color:#7f8c8d;margin-top:4px;font-weight:500}
+
+  .all-btn{width:100%;padding:15px;border-radius:14px;border:none;background:linear-gradient(135deg,#c0392b,#a93226);color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:20px;font-family:inherit;transition:transform .1s;box-shadow:0 4px 16px rgba(192,57,43,.25)}
+  .all-btn:active{transform:scale(.98)}
+
+  .chapter-grid{display:flex;flex-direction:column;gap:8px}
+  .ch-btn{display:flex;justify-content:space-between;align-items:center;padding:15px 18px;border-radius:12px;border:1.5px solid #e8e8e8;background:#fff;cursor:pointer;text-align:left;transition:all .15s;font-family:inherit}
+  .ch-btn:hover{border-color:#c0392b;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .ch-btn .name{font-size:14px;font-weight:600;color:#1a1a2e;line-height:1.45;flex:1}
+  .ch-btn .count{font-size:11px;font-weight:700;color:#c0392b;background:#fdecea;padding:4px 12px;border-radius:20px;white-space:nowrap;margin-left:10px}
+
+  /* ===== QUIZ ===== */
+  .quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .back-btn{background:none;border:none;font-size:14px;color:#7f8c8d;cursor:pointer;font-weight:600;font-family:inherit;padding:4px 0}
+  .back-btn:hover{color:#c0392b}
+  .quiz-meta{display:flex;gap:16px;align-items:center}
+  .quiz-meta .pos{font-size:15px;font-weight:800;color:#1a1a2e}
+  .quiz-meta .sc{font-size:13px;font-weight:700;color:#27ae60}
+
+  .bar-track{width:100%;height:5px;background:#e0e0e0;border-radius:3px;margin-bottom:24px;overflow:hidden}
+  .bar-fill{height:100%;background:linear-gradient(90deg,#c0392b,#e74c3c);border-radius:3px;transition:width .35s ease}
+
+  .q-card{background:#fff;border-radius:16px;padding:22px 20px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+  .q-card .q-id{font-size:11px;font-weight:800;color:#c0392b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .q-card .q-text{font-size:16px;line-height:1.7;font-weight:500}
+
+  .opts{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+  .opt{display:flex;align-items:flex-start;gap:14px;padding:15px 18px;border-radius:14px;border:2px solid #e8e8e8;background:#fff;cursor:pointer;text-align:left;transition:all .15s;font-family:inherit;font-size:14px;line-height:1.55}
+  .opt:hover:not(.disabled){border-color:#bdc3c7}
+  .opt .circle{width:30px;height:30px;min-width:30px;border-radius:50%;background:#f5f6fa;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#636e72;transition:all .15s;margin-top:1px}
+  .opt .txt{flex:1;color:#2d3436}
+  .opt.correct{border-color:#27ae60;background:#eafaf1}
+  .opt.correct .circle{background:#27ae60;color:#fff}
+  .opt.wrong{border-color:#c0392b;background:#fdecea}
+  .opt.wrong .circle{background:#c0392b;color:#fff}
+  .opt.dim{opacity:.45;pointer-events:none}
+  .opt.disabled{cursor:default}
+
+  .feedback{text-align:center;padding:14px 0;animation:fadeUp .25s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .feedback .msg{font-size:16px;font-weight:700;margin-bottom:16px}
+  .feedback .msg.ok{color:#27ae60}
+  .feedback .msg.no{color:#c0392b}
+  .next-btn{padding:13px 36px;border-radius:12px;border:none;background:#1a1a2e;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .1s}
+  .next-btn:active{transform:scale(.97)}
+
+  /* ===== RESULT ===== */
+  .result-card{text-align:center;padding:36px 24px;background:#fff;border-radius:20px;margin-bottom:24px;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+  .result-card .emoji{font-size:52px;margin-bottom:8px}
+  .result-card h2{font-size:20px;font-weight:800;margin-bottom:10px;color:#1a1a2e}
+  .result-card .big{font-size:48px;font-weight:800;color:#1a1a2e}
+  .result-card .pct{font-size:20px;font-weight:700;color:#c0392b;margin:4px 0 10px}
+  .result-card .rmsg{font-size:14px;color:#636e72;font-weight:500}
+
+  .review-title{font-size:16px;font-weight:800;margin-bottom:12px;color:#1a1a2e}
+  .review-item{padding:16px;border-radius:12px;background:#fdecea;border:1px solid #f5c6cb;margin-bottom:10px;font-size:13px;line-height:1.7}
+  .review-item .rq{margin-bottom:6px;color:#1a1a2e}
+  .review-item .rw{color:#c0392b;margin-bottom:3px}
+  .review-item .rc{color:#27ae60;font-weight:700}
+  .perfect{text-align:center;font-size:16px;font-weight:700;color:#27ae60;padding:16px 0}
+
+  .result-actions{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+  .retry-btn{padding:13px 28px;border-radius:12px;border:2px solid #c0392b;background:#fff;color:#c0392b;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+  .home-btn2{padding:13px 28px;border-radius:12px;border:none;background:#1a1a2e;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+
+  .footer{text-align:center;padding:24px 0 8px;font-size:11px;color:#bdc3c7;font-weight:500}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+const Q = [
+  // === Bài 2 ===
+  {id:"2.1",ch:2,q:"Theo quan điểm chủ nghĩa Mác- Lênin về chiến tranh thì bản chất chiến tranh ngày nay:",o:["Có sự thay đổi phù hợp với sự phát triển của khoa học và kỹ thuật quân sự","Có nhiều sự thay đổi về chất","Không thay đổi"],a:2},
+  {id:"2.2",ch:2,q:"Theo quan điểm của chủ nghĩa Mác – Lênin, nguồn gốc nảy sinh chiến tranh là:",o:["Có 3 nguồn gốc (nguồn gốc kinh tế, nguồn gốc chính trị và nguồn gốc xã hội)","Có 2 nguồn gốc (nguồn gốc kinh tế và nguồn gốc chính trị)","Có 2 nguồn gốc (nguồn gốc kinh tế và nguồn gốc xã hội)"],a:2},
+  {id:"2.3",ch:2,q:"Theo quan điểm của chủ nghĩa Mác- Lênin đặc trưng cơ bản của chiến tranh là:",o:["Là hành vi bạo lực","Là sự huy động sức mạnh đến tột cùng, không hạn độ của các bên tham chiến","Là bạo lực vũ trang có tổ chức"],a:2},
+  {id:"2.4",ch:2,q:"Sức mạnh bảo vệ Tổ quốc theo tư tưởng Hồ Chí Minh:",o:["Là sức mạnh của cả dân tộc, cả nước kết hợp với sức mạnh của thời đại","Là sức mạnh của cả dân tộc, của giai cấp công nhân dưới sự lãnh đạo của Đảng","Là trách nhiệm và nghĩa vụ của cả dân tộc của giai cấp công nhân và nhân dân lao động"],a:0},
+  {id:"2.5",ch:2,q:"Theo quan điểm chủ nghĩa Mác-Lênin, nguồn gốc trực tiếp dẫn đến chiến tranh là:",o:["Trong xã hội xuất hiện giai cấp và đối kháng giai cấp","Trong xã hội xuất hiện chế độ tư hữu về tư liệu sản xuất và nhà nước","Trong xã hội xuất hiện mâu thuẫn lợi ích"],a:0},
+  {id:"2.6",ch:2,q:"Phân tích tính chất chính trị xã hội của chiến tranh, Hồ Chí Minh đã chia chiến tranh thành:",o:["Chiến tranh cách mạng và chiến tranh phản cách mạng","Chiến tranh tiến bộ và chiến tranh phản tiến bộ","Chiến tranh chính nghĩa và chiến tranh phi nghĩa"],a:2},
+  {id:"2.7",ch:2,q:"\"Bản chất giai cấp quyết định mục tiêu chiến đấu, nhiệm vụ chính trị và chức năng xã hội của quân đội\" thể hiện:",o:["Bản chất giai cấp của quân đội về mặt chính trị","Bản chất giai cấp của quân đội về mặt tư tưởng, tổ chức","Bản chất giai cấp của quân đội về mặt tổ chức"],a:0},
+  {id:"2.8",ch:2,q:"Theo quan điểm của chủ nghĩa Mác - Lênin về bản chất giai cấp của quân đội phụ thuộc vào:",o:["Bản chất của các nhà nước đã tổ chức ra quân đội đó","Bản chất của các giai cấp và của nhà nước đã tổ chức ra quân đội đó","Bản chất của giai cấp công nông và của nhà nước đã tổ chức ra quân đội đó"],a:0},
+  {id:"2.9",ch:2,q:"Bảo vệ Tổ quốc XHCN theo quan điểm chủ nghĩa Mác- Lênin:",o:["Là sức mạnh của cả dân tộc, cả nước kết hợp với sức mạnh thời đại","Là sức mạnh của cả dân tộc, của giai cấp công nhân","Là trách nhiệm và nghĩa vụ của cả dân tộc của giai cấp công nhân và nhân dân lao động"],a:2},
+  {id:"2.10",ch:2,q:"Theo tư tưởng Hồ Chí Minh về chiến tranh, tiêu chí để nhận biết một cuộc chiến tranh chính nghĩa là:",o:["Là một cuộc chiến tranh phòng ngự","Là một cuộc chiến tranh bảo vệ lợi ích chính đáng của dân tộc","Là một cuộc chiến tranh bảo vệ lợi ích của giai cấp thống trị"],a:1},
+  {id:"2.11",ch:2,q:"Theo tư tưởng Hồ Chí Minh, Quân đội nhân dân Việt Nam có những chức năng:",o:["Chiến đấu và sẵn sàng chiến đấu","Chiến đấu, lao động sản xuất","Chiến đấu, công tác, lao động sản xuất"],a:2},
+  {id:"2.12",ch:2,q:"Nguồn gốc nảy sinh chiến tranh theo quan điểm của chủ nghĩa Mác- Lênin:",o:["Do xuất hiện của cải dư thừa","Do xuất hiện sự chiếm hữu tư nhân về tư liệu sản xuất, giai cấp và đối kháng giai cấp","Do định mệnh của con người và xã hội loài người"],a:1},
+  {id:"2.13",ch:2,q:"Theo quan điểm Chủ nghĩa Mác Lênin về bản chất giai cấp của quân đội:",o:["Bản chất giai cấp của quân đội phụ thuộc vào bản chất giai cấp của nhà nước sinh ra nó","Là công cụ bạo lực vũ trang của toàn xã hội, bảo vệ lợi ích xã hội","Bản chất giai cấp của quân đội là bền vững, bất biến, không thay đổi"],a:0},
+  {id:"2.14",ch:2,q:"Tư tưởng Hồ Chí Minh về sức mạnh bảo vệ Tổ quốc:",o:["Là sức mạnh của cả dân tộc, kết hợp với sức mạnh của nền quốc phòng toàn dân","Là sức mạnh tổng hợp của cả dân tộc, cả nước kết hợp với sức mạnh thời đại","Là sức mạnh của toàn dân, lấy lực lượng vũ trang làm nòng cốt"],a:1},
+  {id:"2.15",ch:2,q:"Tư tưởng Hồ Chí Minh xác định thái độ đối với chiến tranh là:",o:["Phản đối tất cả các cuộc chiến tranh","Phản đối các cuộc chiến tranh chống áp bức, nô dịch","Ủng hộ chiến tranh chính nghĩa, phản đối chiến tranh phi nghĩa"],a:2},
+  {id:"2.16",ch:2,q:"Theo quan điểm chủ nghĩa Mác Lênin, bản chất chiến tranh là:",o:["\"Là sự kế tục của chính trị bằng những biện pháp khác\" (cụ thể là bằng bạo lực)","Chiến tranh làm gián đoạn chính trị bằng biện pháp bạo lực","Chiến tranh quyết định mục đích chính trị bằng biện pháp bạo lực"],a:0},
+  {id:"2.17",ch:2,q:"Quan điểm đầu tiên của chủ nghĩa Mác - Lênin về bảo vệ Tổ quốc xã hội chủ nghĩa:",o:["Bảo vệ tổ quốc XHCN là nhiệm vụ thường xuyên liên tục","Bảo vệ tổ quốc XHCN là tất yếu khách quan","Bảo vệ tổ quốc XHCN là nhiệm vụ trọng yếu của toàn dân"],a:1},
+  {id:"2.18",ch:2,q:"Nguyên tắc quan trọng nhất về xây dựng quân đội kiểu mới của Lê nin là:",o:["Sự lãnh đạo của Đảng Cộng sản đối với quân đội","Tính kỷ luật cao là yếu tố quyết định sức mạnh quân đội","Quân đội chính quy, hiện đại, trung thành với giai cấp công nhân"],a:0},
+  {id:"2.19",ch:2,q:"Theo quan điểm của Lênin, \"bảo vệ Tổ quốc XHCN\":",o:["Là trách nhiệm và nghĩa vụ của toàn dân tộc, của giai cấp công nhân và nhân dân lao động","Là trách nhiệm của lực lượng vũ trang (quân đội, công an)","Là chiến tranh nhân dân thực hiện toàn dân đánh giặc"],a:0},
+  {id:"2.20",ch:2,q:"Theo quan điểm của chủ nghĩa Mác- Lênin đặc trưng cơ bản của chiến tranh là:",o:["Là hành vi bạo lực","Là sự huy động sức mạnh đến tột cùng, không hạn độ của các bên tham chiến","Là bạo lực vũ trang có tổ chức"],a:2},
+  {id:"2.21",ch:2,q:"Lê nin khẳng định yếu tố giữ vai trò quyết định đến sức mạnh chiến đấu của quân đội:",o:["Quân số, tổ chức, cơ cấu biên chế","Chất lượng vũ khí, trang bị kỹ thuật","Chính trị tinh thần"],a:2},
+  // === Bài 3 ===
+  {id:"3.1",ch:3,q:"Nội dung xây dựng thế trận QPTD – ANND là:",o:["Phân vùng chiến lược về QP, AN kết hợp với xây dựng hậu phương chiến lược","Phân vùng chiến lược cho lực lượng bộ đội chủ lực kết hợp xây dựng hậu phương vững mạnh","Phân vùng chiến lược cho bộ đội chủ lực và bộ đội địa phương, kết hợp xây dựng hậu phương vững mạnh"],a:0},
+  {id:"3.2",ch:3,q:"Xây dựng tiềm lực quân sự an ninh cần tập trung vào:",o:["Xây dựng lực lượng vũ trang vững mạnh toàn diện về mọi mặt","Xây dựng lực lượng vũ trang nhân dân vững mạnh toàn diện về mọi mặt","Xây dựng lực lượng quân đội, công an nhân dân vững mạnh toàn diện về mọi mặt"],a:1},
+  {id:"3.3",ch:3,q:"Tiềm lực khoa học, công nghệ của nền quốc phòng toàn dân, an ninh nhân dân:",o:["Là khả năng về KH&CN của quốc gia trên tất cả các lĩnh vực đời sống xã hội","Là khả năng về KH&CN của quốc gia có thể khai thác, huy động để phục vụ cho QP-AN","Là khả năng về KH&CN của lực lượng vũ trang nhân dân Việt Nam"],a:1},
+  {id:"3.4",ch:3,q:"Tiềm lực quân sự an ninh là:",o:["Là khả năng về vật chất và tinh thần của xã hội có thể huy động tạo thành sức mạnh phục vụ cho nhiệm vụ quân sự, an ninh và cho chiến tranh","Là sức mạnh của LLVTND được huy động để bảo vệ Tổ quốc Việt Nam XHCN","Là sức mạnh của LLVTND, đặc biệt là sức mạnh của quân đội nhân dân"],a:0},
+  {id:"3.5",ch:3,q:"Vai trò tiềm lực quân sự an ninh trong nền QPTD – ANND là:",o:["Là nhân tố cơ bản, biểu hiện tập trung, trực tiếp sức mạnh nền QPTD - ANND","Là nhân tố cơ bản quyết định sức mạnh nền QPTD - ANND","Là nhân tố quan trọng nhất tạo nên sức mạnh nền QPTD - ANND"],a:0},
+  {id:"3.6",ch:3,q:"Xây dựng lực lượng QP – AN là xây dựng:",o:["Lực lượng thường trực và lực lượng dự bị động viên","Bộ đội chủ lực, bộ đội địa phương, bộ đội biên phòng, bộ đội cảnh sát biển","Lực lượng chính trị và lực lượng vũ trang nhân dân"],a:2},
+  {id:"3.7",ch:3,q:"Thế trận quốc phòng, an ninh:",o:["Là sự tổ chức, bố trí LLVTND theo yêu cầu của quốc phòng, an ninh","Là sự tổ chức, bố trí lực lượng, tiềm lực mọi mặt của đất nước và của toàn dân theo yêu cầu của QP-AN","Là sự tổ chức, bố trí lực lượng vũ trang theo yêu cầu của chiến tranh nhân dân BVTQ"],a:1},
+  {id:"3.8",ch:3,q:"Tính toàn diện trong xây dựng nền quốc phòng toàn dân, an ninh nhân dân là:",o:["Xây dựng nền QP – AN trên cơ sở xây dựng mọi tiềm lực của quốc gia","Mọi người dân phải tham gia xây dựng lực lượng vũ trang","Tập trung xây dựng các tiềm lực: kinh tế, chính trị tinh thần, KH-CN, quân sự - an ninh"],a:0},
+  {id:"3.9",ch:3,q:"Tiềm lực kinh tế của nền quốc phòng toàn dân, an ninh nhân dân:",o:["Là khả năng về kinh tế của đất nước trên tất cả các lĩnh vực đời sống xã hội","Là khả năng về kinh tế của đất nước có thể khai thác, huy động nhằm phục vụ cho QP-AN","Là khả năng về kinh tế của đất nước có thể khai thác, huy động nhằm phục vụ cho đời sống dân sinh"],a:1},
+  {id:"3.10",ch:3,q:"Nội dung xây dựng thế trận QPTD – ANND là (câu tổng hợp):",o:["Phân vùng chiến lược về QP,AN kết hợp với xây dựng hậu phương chiến lược","Xây dựng khu vực phòng thủ tỉnh (thành phố) tạo nền tảng của thế trận QPTD- ANND","Tất cả các phương án trên"],a:2},
+  {id:"3.12",ch:3,q:"Tiềm lực chính trị, tinh thần là:",o:["Nhân tố cơ bản tạo nên sức mạnh của QP, AN","Khả năng về chính trị, tinh thần của xã hội có thể huy động tạo nên sức mạnh để thực hiện nhiệm vụ QP, AN","Nhân tố hàng đầu trong xây dựng tiềm lực QP, AN"],a:1},
+  {id:"3.13",ch:3,q:"Lực lượng của nền Quốc phòng toàn dân, an ninh nhân dân bao gồm:",o:["Lực lượng toàn dân, lực lượng vũ trang nhân dân","Lực lượng quân đội nhân dân và công an nhân dân","Lực lượng toàn dân và dân quân tự vệ"],a:0},
+  {id:"3.15",ch:3,q:"Thế trận quốc phòng toàn dân, an ninh nhân dân là:",o:["Sự tổ chức, bố trí lực lượng, tiềm lực mọi mặt của đất nước trên toàn bộ lãnh thổ","Sự bố trí con người và vũ khí trang bị phù hợp trên toàn bộ lãnh thổ","Sự bố trí thế trận sẵn sàng tác chiến trên một địa bàn chiến lược"],a:0},
+  {id:"3.16",ch:3,q:"Đặc trưng đầu tiên của nền quốc phòng toàn dân, an ninh nhân dân:",o:["Mang tính chất tự vệ do giai cấp công nhân tiến hành","Chỉ có mục đích duy nhất là tự vệ chính đáng","Được xây dựng hiện đại có sức mạnh tổng hợp"],a:1},
+  {id:"3.17",ch:3,q:"Tiềm lực QP-AN tập trung ở:",o:["Chính trị tinh thần; KH&CN; kinh tế; quân sự an ninh","Chính trị tinh thần; đối ngoại, KH&CN","Công nghiệp quốc phòng, khoa học quân sự"],a:0},
+  {id:"3.18",ch:3,q:"Đảng ta khẳng định vị trí của nền QPTD, ANND:",o:["Chỉ coi trọng QP-AN khi đất nước có chiến tranh","Luôn coi trọng QP-AN, coi đó là nhiệm vụ chiến lược gắn bó chặt chẽ","Luôn coi trọng QP-AN, coi đó là nền tảng để xây dựng đất nước"],a:1},
+  {id:"3.19",ch:3,q:"Đặc trưng mang tính truyền thống của nền QPTD, ANND:",o:["Nền QP-AN do nhân dân xây dựng, mang tính chất nhân dân sâu sắc","Nền QP-AN vì dân, của dân và toàn thể nhân dân tiến hành","Nền QP-AN mang tính giai cấp, dân tộc sâu sắc"],a:1},
+  // === Bài 4 ===
+  {id:"4.1",ch:4,q:"Khái niệm chiến tranh nhân dân chỉ ra: Chiến tranh nhân dân là…?",o:["Là cuộc chiến tranh toàn dân, toàn diện do quân đội nhân dân Việt Nam làm nòng cốt…","Là hình thức chiến tranh toàn dân - toàn diện, lấy lực lượng vũ trang nhân dân làm nòng cốt…","Là hình thức chiến tranh huy động mọi tầng lớp nhân dân do lực lượng vũ trang làm nòng cốt…"],a:1},
+  {id:"4.2",ch:4,q:"Mục đích của chiến tranh nhân dân là?",o:["Giữ vững môi trường hòa bình, ổn định chính trị, an ninh quốc gia, trật tự an toàn xã hội","Giữ cho đất nước được hòa bình như hiện tại và mãi mãi","Giữ cho Tổ quốc luôn bình yên, phát triển, an ninh quốc gia và trật tự ATXH được bảo đảm"],a:0},
+  {id:"4.3",ch:4,q:"Đối tượng của chiến tranh nhân dân Việt Nam hiện nay là?",o:["Nhiều đối tượng trong đó tập trung chủ yếu vào những kẻ chống phá đất nước từ bên trong","Chỉ có những thế lực muốn thôn tính chủ quyền, lãnh thổ của nước ta","Bất kể thế lực nào có âm mưu và hành động chống phá đất nước ta trong sự nghiệp xây dựng và bảo vệ Tổ quốc"],a:2},
+  {id:"4.4",ch:4,q:"Lực lượng trong chiến tranh nhân dân được tổ chức như thế nào?",o:["Được tổ chức chặt chẽ thành lực lượng quần chúng rộng rãi và lực lượng quân sự","Được tổ chức thành hai lực lượng là lực lượng nhân dân và lực lượng vũ trang","Được tổ chức cụ thể thành lực lượng đánh địch trên mặt trận quân sự và lực lượng đánh địch ở mọi nơi"],a:0},
+  {id:"4.6",ch:4,q:"Việc tổ chức thế trận trong chiến tranh nhân dân cần được bố trí như thế nào?",o:["Bố trí đầy đủ, đồng đều, rộng khắp trên cả nước","Bố trí rộng khắp trên cả nước, nhưng có trọng tâm, trọng điểm","Bố trí tập trung chủ yếu ở những khu vực trọng điểm"],a:1},
+  {id:"4.7",ch:4,q:"Tính chất của chiến tranh nhân dân Việt Nam: Là cuộc chiến tranh...?",o:["Toàn dân, toàn diện lấy LLVTND làm nòng cốt, dưới sự lãnh đạo của Đảng CSVN","Đảng CSVN lãnh đạo toàn thể nhân dân tiến hành chiến tranh toàn diện ở mọi nơi","Toàn dân, toàn diện, lấy LLVTND làm nòng cốt, dưới sự lãnh đạo của Nhà nước CHXHCN VN"],a:0},
+  {id:"4.8",ch:4,q:"Tiến hành CTND bảo vệ Tổ quốc, cần quán triệt mấy quan điểm chỉ đạo của Đảng?",o:["6 quan điểm chỉ đạo","5 quan điểm chỉ đạo","7 quan điểm chỉ đạo"],a:0},
+  {id:"4.9",ch:4,q:"Tiêu chí của một cuộc chiến tranh chính nghĩa?",o:["Cuộc chiến tranh để bảo vệ quyền và lợi ích chính đáng của một dân tộc","Cuộc chiến tranh để bảo vệ quyền lợi của giai cấp","Cuộc đấu tranh của tất cả nhân dân trên cả nước"],a:0},
+  {id:"4.10",ch:4,q:"Đâu là tính chất của chiến tranh nhân dân Việt Nam?",o:["Là cuộc chiến tranh phát huy sức mạnh của lịch sử dân tộc","Là cuộc chiến tranh toàn dân, toàn diện, lấy LLVTND làm nòng cốt","Là cuộc chiến tranh để bảo vệ biên giới, hải đảo, an ninh quốc gia"],a:1},
+  {id:"4.12",ch:4,q:"CTND ngày nay để bảo vệ Tổ quốc chúng ta cần tập trung đánh địch?",o:["Trên mặt trận ngoại giao và văn hóa","Trên mặt trận kinh tế và bảo vệ chủ quyền biển đảo","Trên tất cả mọi mặt trận, lấy đấu tranh quân sự là chủ yếu"],a:2},
+  {id:"4.15",ch:4,q:"Tổ quốc Việt Nam XHCN được hiểu là bao gồm các thành tố nào?",o:["Lãnh thổ và toàn thể nhân dân","Nhân dân và chủ quyền biên giới cả đất liền và hải đảo","Lãnh thổ; nhân dân; thể chế chính trị (chế độ XHCN)"],a:2},
+  {id:"4.17",ch:4,q:"Thực hiện toàn dân đánh giặc được hiểu là?",o:["Trang bị vũ khí cho mọi người dân tham gia đánh giặc","Tổ chức động viên toàn thể nhân dân tham gia đánh giặc","Huy động mọi người dân tham gia lực lượng vũ trang nhân dân"],a:1},
+  {id:"4.18",ch:4,q:"Vai trò của LLVTND trong huy động sức mạnh toàn dân đánh giặc:",o:["Là lực lượng chính đánh giặc và bảo vệ nhân dân","Là lực lượng nòng cốt để toàn dân đánh giặc","Là lực lượng chủ yếu, xung kích để đánh giặc"],a:1},
+  {id:"4.19",ch:4,q:"Tại sao phải chuẩn bị mọi mặt trên cả nước để đủ sức đánh được lâu dài?",o:["Vì quán triệt quan điểm \"trường kỳ kháng chiến\"","Xuất phát từ âm mưu thủ đoạn của kẻ thù là \"đánh nhanh thắng nhanh\"","Vì điều kiện, nguồn lực còn hạn chế nên không thể đánh giặc ngay từ đầu"],a:1},
+  {id:"4.21",ch:4,q:"Phương châm chỉ đạo của Đảng về bảo vệ tổ quốc trong tình hình mới?",o:["Kiên định về mục tiêu, nguyên tắc về sách lược; linh hoạt, mềm dẻo về chiến lược","Kiên định về mục tiêu, nguyên tắc chiến lược; linh hoạt, mềm dẻo về sách lược","Luôn kiên định về mục tiêu, nguyên tắc cả trong chiến lược và sách lược"],a:1},
+  {id:"4.22",ch:4,q:"Mục đích của CTND Việt Nam bảo vệ Tổ quốc là:",o:["Bảo vệ vững chắc độc lập-chủ quyền; Bảo vệ Đảng, Nhà nước, nhân dân và chế độ XHCN; Bảo vệ sự nghiệp đổi mới","Bảo vệ lợi ích quốc gia dân tộc; Bảo vệ nền văn hóa; Giữ vững hòa bình, ổn định chính trị, ANQG","Cả a và b"],a:2},
+  {id:"4.25",ch:4,q:"Âm mưu, thủ đoạn chủ yếu của kẻ thù khi xâm lược nước ta:",o:["Thực hiện đánh nhanh, thắng nhanh","Hỗ trợ lực lượng phản động trong nước, không tiến hành hoạt động quân sự từ bên ngoài","Bất ngờ tấn công từ bên ngoài để lật đổ chế độ"],a:0},
+  {id:"4.28",ch:4,q:"Tính chất chiến tranh nhân dân bảo vệ Tổ quốc là:",o:["Cuộc chiến tranh của giai cấp công nhân nhằm bảo vệ độc lập chủ quyền và lãnh thổ","Cuộc chiến tranh chính nghĩa, tự vệ cách mạng nhằm bảo vệ Tổ quốc VN XHCN","Cuộc chiến tranh tự vệ nhằm đánh thắng các thế lực xâm lược"],a:1},
+  {id:"4.29",ch:4,q:"Tính chất hiện đại trong CTND bảo vệ Tổ quốc được thể hiện:",o:["Hiện đại về vũ khí, trang bị, tri thức và nghệ thuật quân sự","Sử dụng vũ khí trang bị hiện đại để tiến hành chiến tranh","Kết hợp sử dụng vũ khí tương đối hiện đại với vũ khí hiện đại"],a:0},
+  {id:"4.30",ch:4,q:"Tính chất của CTND bảo vệ Tổ quốc?",o:["Là CTND toàn dân, toàn diện, lấy lực lượng quân đội làm nòng cốt, dưới sự lãnh đạo của Đảng CSVN","Là CTND toàn dân, toàn diện, lấy lực lượng vũ trang làm nòng cốt, dưới sự lãnh đạo của Đảng CSVN","Là CTND toàn dân, toàn diện, lấy LLVTND làm nòng cốt, dưới sự lãnh đạo của Đảng CSVN"],a:2},
+  {id:"4.32",ch:4,q:"Trong tiến hành chiến tranh toàn diện, mặt trận đấu tranh nào là chủ yếu:",o:["Mặt trận kinh tế","Mặt trận quân sự","Mặt trận ngoại giao"],a:1},
+  {id:"4.37",ch:4,q:"Tiến hành CTND bảo vệ Tổ quốc phải phối hợp chặt chẽ giữa:",o:["Chống quân xâm lược từ bên ngoài với chống lực lượng khủng bố từ bên trong","Chống quân địch tấn công từ bên ngoài với bạo loạn lật đổ từ bên trong","Chống bạo loạn lật đổ với các hoạt động phá hoại khác"],a:1},
+  // === Bài 5 ===
+  {id:"5.1",ch:5,q:"Nhiệm vụ của LLVTND Việt Nam là?",o:["Kiên quyết chiến đấu để bảo vệ nhân dân và Nhà nước VN XHCN","Sẵn sàng chiến đấu và chiến đấu để bảo vệ độc lập chủ quyền, thống nhất và toàn vẹn lãnh thổ của Tổ quốc","Không ngừng chiến đấu và chiến thắng mọi kẻ thù để bảo vệ Tổ quốc"],a:1},
+  {id:"5.3",ch:5,q:"Phương hướng xây dựng lực lượng QĐND, CAND trong giai đoạn mới?",o:["Từng bước hiện đại đối với tất cả các lực lượng","Từng bước hiện đại, ưu tiên một số quân binh chủng tiến thẳng lên hiện đại","Tiến thẳng lên hiện đại"],a:1},
+  {id:"5.4",ch:5,q:"Bộ đội chủ lực là lực lượng…?",o:["Có sức chiến đấu cao, được bố trí rộng khắp trên cả nước theo quy tắc nhất định","Có sức chiến đấu cao, cơ động khắp chiến trường cả nước để đánh giặc trên khắp mọi vùng miền","Có sức chiến đấu cao, cơ động khắp chiến trường được bố trí phù hợp với thế trận CTND"],a:2},
+  {id:"5.8",ch:5,q:"Khái niệm LLVTND Việt Nam cho thấy…?",o:["LLVTND là các tổ chức vũ trang của nhân dân VN","LLVTND là các tổ chức vũ trang và bán vũ trang của nhân dân VN","Là tất cả các lực lượng được vũ trang của nhân dân VN"],a:1},
+  {id:"5.10",ch:5,q:"Lực lượng vũ trang bao gồm những lực lượng cơ bản nào?",o:["Cảnh sát, quân đội","Quân đội nhân dân Việt Nam","Quân đội nhân dân VN và Công an nhân dân VN"],a:2},
+  {id:"5.11",ch:5,q:"Lực lượng thường trực trong QĐND Việt Nam bao gồm:…?",o:["Bộ đội chủ lực và các đơn vị quân đội đi làm kinh tế","Bộ đội chủ lực, bộ đội địa phương, bộ đội biên phòng, bộ đội cảnh sát biển","Quân chủng Hải quân và quân chủng Phòng không – Không quân"],a:1},
+  {id:"5.12",ch:5,q:"Dân quân, tự vệ được tổ chức như thế nào?",o:["Tổ chức ở các đơn vị hành chính cơ sở (xã, phường, thị trấn) và cơ quan, tổ chức của nhà nước","Tổ chức ở bất cứ đâu không có quân đội, công an","Tổ chức khi yêu cầu của việc bảo vệ Tổ quốc cần đến những LLVT khác"],a:0},
+  {id:"5.16",ch:5,q:"Quan điểm nguyên tắc trong xây dựng LLVTND thời kỳ mới là?",o:["Tiếp tục tăng cường sự lãnh đạo của Đảng CSVN","Giữ vững và tăng cường sự lãnh đạo của Đảng CSVN đối với LLVTND","Không ngừng tăng cường sự lãnh đạo của Đảng CSVN đối với LLVTND"],a:1},
+  {id:"5.18",ch:5,q:"Phương hướng xây dựng LLVTND trong giai đoạn mới là?",o:["Xây dựng QĐND, CAND theo hướng cách mạng, chính quy, từng bước hiện đại","Xây dựng QĐND, CAND theo hướng cách mạng, chính quy, tinh nhuệ, từng bước hiện đại","Xây dựng QĐND, cảnh sát nhân dân theo hướng cách mạng, chính quy, tinh nhuệ, từng bước hiện đại"],a:1},
+  // === Bài 6 ===
+  {id:"6.1",ch:6,q:"Dựng nước đi đôi với giữ nước đã trở thành…?",o:["Quy luật tồn tại và phát triển của dân tộc ta","Quy luật tồn tại và đánh thắng mọi kẻ thù của nhân dân ta","Quy luật phát triển và hùng cường của dân tộc ta"],a:0},
+  {id:"6.3",ch:6,q:"Kết hợp phát triển KTXH với tăng cường củng cố QPAN nhằm mục đích gì?",o:["Thực hiện thắng lợi hai nhiệm vụ chiến lược xây dựng CNXH và bảo vệ vững chắc Tổ quốc VN XHCN","Thực hiện tốt nhiệm vụ chiến lược xây dựng và phát triển kinh tế xã hội","Thực hiện tốt yêu cầu bảo vệ chủ quyền biển, đảo"],a:0},
+  {id:"6.6",ch:6,q:"Nội dung kết hợp phát triển KTXH với tăng cường củng cố QPAN ở vùng biển, đảo là?",o:["Chú trọng đầu tư phát triển các đội tàu đánh cá cỡ lớn","Chú trọng phát triển các doanh nghiệp khai thác thủy sản quy mô lớn để xuất khẩu","Chú trọng đầu tư phát triển chương trình đánh bắt xa bờ"],a:2},
+  {id:"6.16",ch:6,q:"Tại sao phải kết hợp phát triển KTXH với tăng cường củng cố QPAN?",o:["KTXH với QPAN có mối quan hệ biện chứng, tác động qua lại thúc đẩy nhau cùng phát triển","KTXH tác động một chiều đến QPAN","QPAN xuất hiện để bảo vệ nền kinh tế phát triển bình thường ở mọi quốc gia"],a:0},
+  // === Bài 7 ===
+  {id:"7.1",ch:7,q:"Nghệ thuật quân sự là:",o:["Là lý luận và thực tiễn để chỉ đạo và thực hành chiến tranh (đấu tranh vũ trang)","Là tổng thể phương châm, chính sách và mưu lược được hoạch định để ngăn ngừa và sẵn sàng tiến hành chiến tranh thắng lợi","Là lý luận và thực tiễn để tổ chức và thực hành các chiến dịch quân sự"],a:0},
+  {id:"7.2",ch:7,q:"Cuộc chiến tranh đánh dấu kết thúc hơn một nghìn năm Bắc thuộc là:",o:["Cuộc kháng chiến chống quân Nam Hán của Ngô Quyền","Cuộc khởi nghĩa Hai Bà Trưng","Khởi nghĩa Bà Triệu"],a:0},
+  {id:"7.3",ch:7,q:"Vì sao nước ta thường bị các thế lực ngoại xâm nhòm ngó?",o:["Việt Nam có rừng vàng, biển bạc","Việt Nam có vị trí chiến lược quan trọng ở khu vực Đông Nam Á và biển Đông","Việt Nam là một thị trường tiềm năng, có rất nhiều tài nguyên khoáng sản"],a:1},
+  {id:"7.4",ch:7,q:"Tư tưởng chỉ đạo tác chiến trong tiến hành chiến tranh của ông cha ta là:",o:["Tích cực chủ động phòng thủ","Tích cực chủ động tiến công","Kết hợp giữa tiến công và phòng ngự"],a:1},
+  {id:"7.9",ch:7,q:"Trong nghệ thuật quân sự VN từ khi có Đảng lãnh đạo, nghệ thuật nào là quan trọng nhất:",o:["Nghệ thuật chiến thuật","Nghệ thuật chiến dịch","Nghệ thuật chiến lược"],a:2},
+  {id:"7.12",ch:7,q:"Cuộc kháng chiến chống quân xâm lược Tống thời Lý (1075-1077) là điển hình của nghệ thuật quân sự nào?",o:["Tránh chỗ mạnh đánh chỗ yếu","\"Thanh dã\" (vườn không nhà trống)","\"Tiên phát chế nhân\" (Chủ động tiến công trước)"],a:2},
+  {id:"7.14",ch:7,q:"Nghệ thuật quân sự VN từ khi có Đảng gồm các bộ phận hợp thành là:",o:["Hai bộ phận (CN Mác Lênin và tư tưởng HCM)","Ba bộ phận (chiến lược quân sự, nghệ thuật chiến dịch và chiến thuật)","Ba bộ phận (chiến lược quân sự, nghệ thuật chiến dịch và đường lối Đảng)"],a:1},
+  {id:"7.15",ch:7,q:"Trong khởi nghĩa Lam Sơn, mưu kế được Nguyễn Trãi sử dụng là:",o:["Vườn không nhà trống (Thanh dã)","Rút lui chiến lược để bảo toàn lực lượng","\"Mưu phạt tâm công\""],a:2},
+  {id:"7.25",ch:7,q:"Trong nghệ thuật chiến lược quân sự của Đảng, nội dung nào là quan trọng:",o:["Xác định đúng lực lượng và phương tiện tác chiến của kẻ thù","Xác định đúng đối tượng, đúng đối tác","Xác định đúng kẻ thù, đúng đối tượng tác chiến"],a:2},
+  // === Bài 8 ===
+  {id:"8.1",ch:8,q:"Chủ quyền quốc gia là quyền… trong phạm vi lãnh thổ của quốc gia đó?",o:["Tuyệt đối và toàn diện","Làm chủ một cách độc lập, toàn vẹn và đầy đủ về mọi mặt lập pháp, hành pháp và tư pháp","Độc lập thiết đặt các vấn đề về chủ quyền, pháp lý, chính trị"],a:1},
+  {id:"8.2",ch:8,q:"Lãnh thổ quốc gia bao gồm có?",o:["Vùng đất, vùng biển, vùng trời","Vùng đất, vùng nước, vùng trời và vùng lòng đất","Vùng đất, vùng nước, vùng trời, vùng khí quyển trên vùng trời và vùng lòng đất"],a:1},
+  {id:"8.3",ch:8,q:"Vùng đất quốc gia bao gồm có?",o:["Đất liền, đảo và quần đảo","Toàn bộ vùng đất bên trong đường biên giới quốc gia","Lãnh thổ đất liền và bên trong lòng đất"],a:0},
+  {id:"8.5",ch:8,q:"Vùng biển Việt Nam được xác định có các vùng:..?",o:["Đường cơ sở, nội thủy, lãnh hải, đặc quyền kinh tế","Đường cơ sở, nội thủy, lãnh hải, đặc quyền kinh tế và thềm lục địa","Nội thủy, lãnh hải, tiếp giáp lãnh hải, đặc quyền kinh tế và thềm lục địa"],a:2},
+  {id:"8.6",ch:8,q:"Việt Nam đã tuyên bố chủ quyền với bao nhiêu quần đảo?",o:["1 quần đảo (quần đảo Trường Sa)","3 quần đảo (Hoàng Sa, Trường Sa, quần đảo thuộc Vịnh Hạ Long)","2 quần đảo (Hoàng Sa và Trường Sa)"],a:2},
+  {id:"8.7",ch:8,q:"Theo Công ước Luật Biển 1982, mỗi quốc gia ven biển có những quyền khác nhau đó là?",o:["Quyền chủ quyền và quyền tài phán quốc gia trên biển","Chủ quyền, quyền chủ quyền và quyền tài phán quốc gia","Chủ quyền, quyền chủ quyền và quyền tài phán trong việc cho phép hay không cho phép quốc gia khác hoạt động"],a:1},
+  {id:"8.8",ch:8,q:"Các bộ phận cấu thành biên giới quốc gia bao gồm:?",o:["Biên giới quốc gia trên đất liền, trên vùng nước, trên không","Biên giới quốc gia trên đất liền, trên biển, trong không gian, trong lòng đất, trong vùng nước","Biên giới quốc gia trên đất liền, trên không, trên biển, trong lòng đất"],a:2},
+  {id:"8.9",ch:8,q:"Biên giới quốc gia trên đất liền là:?",o:["Biên giới phân chia chủ quyền lãnh thổ đất liền được quốc tế công nhận","Biên giới phân chia chủ quyền lãnh thổ đất liền của một quốc gia với quốc gia khác","Biên giới phân chia chủ quyền lãnh thổ đất liền với tất cả các nước lân cận"],a:1},
+  {id:"8.10",ch:8,q:"Biên giới quốc gia trên biển là… của các quốc gia ven biển?",o:["Ranh giới ngoài của lãnh hải hoặc là đường phân cách các vùng nội thủy hoặc vùng lãnh hải","Ranh giới ngoài của vùng tiếp giáp lãnh hải","Ranh giới ngoài của vùng đặc quyền kinh tế"],a:0},
+  {id:"8.11",ch:8,q:"Biên giới quốc gia trên không được xác định là:?",o:["Là phần không gian trên đất liền và trên vùng biển thuộc chủ quyền hoàn toàn và đầy đủ","Là mặt thẳng đứng từ biên giới quốc gia trên đất liền và trên biển lên vùng trời","Là khoảng không gian bên trên của biên giới đất liền và vùng biển"],a:1},
+  // === Bài 9 ===
+  {id:"9.2",ch:9,q:"Vai trò của lực lượng dân quân tự vệ:",o:["Là lực lượng cơ bản trong xây dựng nền quốc phòng toàn dân","Là lực lượng xung kích trong xây dựng nền QPTD và ANND","Làm nòng cốt cùng toàn dân đánh giặc ở địa phương, cơ sở khi có chiến tranh"],a:2},
+  {id:"9.4",ch:9,q:"Phương châm xây dựng lực lượng dân quân tự vệ:",o:["Vững mạnh, rộng khắp coi trọng chất lượng là chính","Vững mạnh, toàn diện lấy chất lượng chính trị là chính","Vững mạnh, coi trọng cả số lượng và chất lượng"],a:0},
+  {id:"9.7",ch:9,q:"Lực lượng dự bị động viên bao gồm:",o:["Quân nhân dự bị và phương tiện kỹ thuật dự bị được đăng ký, quản lý vào đơn vị DBĐV","Quân nhân thường trực và phương tiện kỹ thuật","Sĩ quan và hạ sĩ quan quân đội, công an"],a:0},
+  {id:"9.12",ch:9,q:"Động viên công nghiệp Quốc phòng được chuẩn bị:",o:["Khi bắt đầu chiến tranh","Từ thời bình","Trong quá trình chiến tranh"],a:1},
+  {id:"9.15",ch:9,q:"Nhiệm vụ động viên quốc phòng bao gồm:",o:["Bảo đảm nhu cầu quốc phòng trong chiến tranh","Động viên bảo đảm nhu cầu quốc phòng năm đầu chiến tranh","Bảo đảm nhu cầu quốc phòng khi chiến tranh kéo dài"],a:1},
+  // === Bài 10 ===
+  {id:"10.1",ch:10,q:"Tác dụng của phong trào toàn dân bảo vệ an ninh Tổ quốc là?",o:["Là hình thức cơ bản để đảm bảo an ninh trật tự","Là hình thức cơ bản để tập hợp, phát huy quyền làm chủ trong lĩnh vực ANTT","Là hình thức huy động sức dân trong đảm bảo ANTT"],a:1},
+  {id:"10.11",ch:10,q:"Phong trào toàn dân bảo vệ ANTQ là hình thức hoạt động gì?",o:["Tự giác","Bắt buộc","Ai tham gia cũng được"],a:0},
+  {id:"10.12",ch:10,q:"Phong trào toàn dân bảo vệ ANTQ giữ vị trí gì?",o:["Giữ vị trí chiến lược","Là hình thức cơ bản","Nền tảng cơ bản trong sự nghiệp bảo vệ ANQG"],a:0},
+  {id:"10.13",ch:10,q:"Mục đích của phong trào toàn dân bảo vệ ANTQ?",o:["Xây dựng địa phương không có tệ nạn xã hội","Xây dựng và bảo vệ Tổ quốc Việt Nam XHCN","Cả hai ý trên"],a:1},
+];
+
+const CH=[
+  {id:2,n:"Bài 2: Quan điểm CN Mác-Lênin, TT HCM"},
+  {id:3,n:"Bài 3: Xây dựng nền QPTD, ANND"},
+  {id:4,n:"Bài 4: Chiến tranh nhân dân BV Tổ quốc"},
+  {id:5,n:"Bài 5: Xây dựng LLVT nhân dân"},
+  {id:6,n:"Bài 6: Kết hợp KT-XH với QP-AN"},
+  {id:7,n:"Bài 7: Lịch sử nghệ thuật quân sự VN"},
+  {id:8,n:"Bài 8: Chủ quyền biển, đảo, biên giới"},
+  {id:9,n:"Bài 9: Dân quân tự vệ và dự bị động viên"},
+  {id:10,n:"Bài 10: Phong trào toàn dân BV ANTQ"},
+];
+
+const L=["A","B","C","D"];
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+const $=id=>document.getElementById(id);
+const app=$('app');
+
+let state={mode:'home',numQ:20,chId:null,qs:[],cur:0,sel:null,done:false,score:0,history:[]};
+
+function render(){
+  if(state.mode==='home') renderHome();
+  else if(state.mode==='quiz') renderQuiz();
+  else renderResult();
+}
+
+function renderHome(){
+  let h=`<div class="home-header"><div class="logo">⭐</div><h1>Ôn tập Đường lối Quân sự</h1><p>Đại học Bách khoa Hà Nội • ${Q.length} câu hỏi • Đảo thứ tự ngẫu nhiên</p></div>`;
+  h+=`<button class="all-btn" onclick="startQuiz(null)">🎲 Ôn tất cả ${Q.length} câu</button>`;
+  h+=`<div class="chapter-grid">`;
+  CH.forEach(c=>{
+    const cnt=Q.filter(q=>q.ch===c.id).length;
+    h+=`<button class="ch-btn" onclick="startQuiz(${c.id})"><span class="name">${c.n}</span><span class="count">${cnt} câu</span></button>`;
+  });
+  h+=`</div><div class="footer">Tài liệu HUST • Ôn thi trắc nghiệm</div>`;
+  app.innerHTML=h;
+}
+
+function renderQuiz(){
+  const q=state.qs[state.cur];
+  let h=`<div class="quiz-top"><button class="back-btn" onclick="goHome()">← Về</button><div class="quiz-meta"><span class="pos">${state.cur+1}/${state.qs.length}</span><span class="sc">✓ ${state.score}</span></div></div>`;
+  h+=`<div class="bar-track"><div class="bar-fill" style="width:${((state.cur+1)/state.qs.length)*100}%"></div></div>`;
+  h+=`<div class="q-card"><div class="q-id">Câu ${q.id}</div><div class="q-text">${q.q}</div></div>`;
+  h+=`<div class="opts">`;
+  q.o.forEach((opt,i)=>{
+    let cls='opt';
+    if(state.done){
+      cls+=' disabled';
+      if(i===q.a) cls+=' correct';
+      else if(i===state.sel&&i!==q.a) cls+=' wrong';
+      else cls+=' dim';
+    }
+    h+=`<button class="${cls}" onclick="pick(${i})"><span class="circle">${L[i]}</span><span class="txt">${opt}</span></button>`;
+  });
+  h+=`</div>`;
+  if(state.done){
+    const ok=state.sel===q.a;
+    h+=`<div class="feedback"><div class="msg ${ok?'ok':'no'}">${ok?'✓ Chính xác!':'✗ Sai! Đáp án đúng: '+L[q.a]}</div>`;
+    h+=`<button class="next-btn" onclick="nextQ()">${state.cur+1>=state.qs.length?'Xem kết quả':'Câu tiếp →'}</button></div>`;
+  }
+  app.innerHTML=h;
+}
+
+function renderResult(){
+  const pct=Math.round((state.score/state.qs.length)*100);
+  const emoji=pct>=80?'🎉':pct>=50?'💪':'📚';
+  const msg=pct>=80?'Tuyệt vời! Bạn nắm rất tốt!':pct>=50?'Khá tốt, cần ôn thêm một chút!':'Cần ôn tập thêm nhiều nhé!';
+  let h=`<div class="result-card"><div class="emoji">${emoji}</div><h2>Kết quả</h2><div class="big">${state.score}/${state.qs.length}</div><div class="pct">${pct}%</div><div class="rmsg">${msg}</div></div>`;
+  const wrongs=state.history.filter(x=>!x.ok);
+  if(wrongs.length>0){
+    h+=`<div class="review-title">Xem lại ${wrongs.length} câu sai</div>`;
+    wrongs.forEach(w=>{
+      const q=state.qs[w.idx];
+      h+=`<div class="review-item"><div class="rq"><strong>Câu ${q.id}:</strong> ${q.q}</div><div class="rw">Bạn chọn: ${L[w.chosen]}. ${q.o[w.chosen]}</div><div class="rc">Đáp án đúng: ${L[q.a]}. ${q.o[q.a]}</div></div>`;
+    });
+  } else {
+    h+=`<div class="perfect">🏆 Bạn trả lời đúng tất cả!</div>`;
+  }
+  h+=`<div class="result-actions"><button class="retry-btn" onclick="startQuiz(state.chId)">🔄 Làm lại</button><button class="home-btn2" onclick="goHome()">🏠 Về trang chủ</button></div>`;
+  app.innerHTML=h;
+}
+
+window.goHome=function(){state.mode='home';render();};
+
+window.startQuiz=function(chId){
+  const pool=chId===null?Q:Q.filter(q=>q.ch===chId);
+  const s=shuffle(pool);
+  state={...state,mode:'quiz',chId,qs:s,cur:0,sel:null,done:false,score:0,history:[]};
+  render();
+  window.scrollTo(0,0);
+};
+
+window.pick=function(i){
+  if(state.done) return;
+  state.sel=i;
+  state.done=true;
+  const ok=i===state.qs[state.cur].a;
+  if(ok) state.score++;
+  state.history.push({idx:state.cur,chosen:i,ok});
+  render();
+};
+
+window.nextQ=function(){
+  if(state.cur+1>=state.qs.length){state.mode='result';}
+  else{state.cur++;state.sel=null;state.done=false;}
+  render();
+  window.scrollTo(0,0);
+};
+
+render();
+</script>
+</body>
+</html>
