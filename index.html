@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ôn tập Đường lối Quân sự – HUST</title>
+<title>Ôn tập Quân sự – HUST</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⭐</text></svg>">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
@@ -19,6 +19,9 @@
 
   .all-btn{width:100%;padding:15px;border-radius:14px;border:none;background:linear-gradient(135deg,#c0392b,#a93226);color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:20px;font-family:inherit;transition:transform .1s;box-shadow:0 4px 16px rgba(192,57,43,.25)}
   .all-btn:active{transform:scale(.98)}
+  .all-btn.qsc{background:linear-gradient(135deg,#2c3e50,#34495e);box-shadow:0 4px 16px rgba(44,62,80,.25)}
+
+  .section-label{font-size:13px;font-weight:800;color:#636e72;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 12px;padding:0 2px}
 
   .chapter-grid{display:flex;flex-direction:column;gap:8px}
   .ch-btn{display:flex;justify-content:space-between;align-items:center;padding:15px 18px;border-radius:12px;border:1.5px solid #e8e8e8;background:#fff;cursor:pointer;text-align:left;transition:all .15s;font-family:inherit}
@@ -60,6 +63,9 @@
   .feedback .msg.no{color:#c0392b}
   .next-btn{padding:13px 36px;border-radius:12px;border:none;background:#1a1a2e;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .1s}
   .next-btn:active{transform:scale(.97)}
+  .nav-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .prev-btn{padding:13px 28px;border-radius:12px;border:2px solid #bdc3c7;background:#fff;color:#636e72;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .1s}
+  .prev-btn:active{transform:scale(.97)}
 
   /* ===== RESULT ===== */
   .result-card{text-align:center;padding:36px 24px;background:#fff;border-radius:20px;margin-bottom:24px;box-shadow:0 4px 20px rgba(0,0,0,.06)}
@@ -81,6 +87,30 @@
   .home-btn2{padding:13px 28px;border-radius:12px;border:none;background:#1a1a2e;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
 
   .footer{text-align:center;padding:24px 0 8px;font-size:11px;color:#bdc3c7;font-weight:500}
+
+  .map-grid{width:100%;border-collapse:collapse;margin:12px 0;font-size:11px;table-layout:fixed}
+  .map-grid td{border:2px solid #dcdde1;padding:10px 4px;text-align:center;font-weight:600;color:#2d3436;word-break:break-all;line-height:1.3}
+  .map-grid .blank{background:#ffeaa7;color:#d63031;font-size:18px;font-weight:800}
+  .map-grid input{width:100%;border:none;background:transparent;text-align:center;font-size:11px;font-weight:700;font-family:inherit;color:#c0392b;outline:none}
+  .map-grid .cell-ok{background:#d5f5e3;color:#27ae60}
+  .map-grid .cell-no{background:#fadbd8;color:#c0392b}
+  .map-grid .cell-given{background:#f8f9fa}
+  .grid-wrap{position:relative;display:inline-block;width:100%}
+  .m-point{position:absolute;width:28px;height:28px;border-radius:50%;border:2px solid #2d3436;background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#2d3436;transform:translate(-50%,-50%);z-index:2;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+  .grid-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  .grid-item{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:12px;border:1.5px solid #e8e8e8;background:#fff;cursor:pointer;font-family:inherit;text-align:left}
+  .grid-item:hover{border-color:#2c3e50;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .grid-item .gi-name{font-size:14px;font-weight:600;color:#1a1a2e}
+  .grid-item .gi-tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;white-space:nowrap;margin-left:8px}
+  .gi-tag.gauss{background:#ebf5fb;color:#2980b9}
+  .gi-tag.utm{background:#fef9e7;color:#f39c12}
+  .gi-tag.vn{background:#eafaf1;color:#27ae60}
+  .check-btn{width:100%;padding:14px;border-radius:12px;border:none;background:#27ae60;color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:16px}
+  .grid-score{text-align:center;padding:16px;font-size:18px;font-weight:800;margin-top:12px;border-radius:12px}
+  .grid-score.perfect{background:#d5f5e3;color:#27ae60}
+  .grid-score.partial{background:#fef9e7;color:#f39c12}
+  .grid-score.bad{background:#fadbd8;color:#c0392b}
+  .grid-nav{display:flex;gap:10px;justify-content:center;margin-top:16px}
 </style>
 </head>
 <body>
@@ -198,6 +228,126 @@ const Q = [
   {id:"10.11",ch:10,q:"Phong trào toàn dân bảo vệ ANTQ là hình thức hoạt động gì?",o:["Tự giác","Bắt buộc","Ai tham gia cũng được"],a:0},
   {id:"10.12",ch:10,q:"Phong trào toàn dân bảo vệ ANTQ giữ vị trí gì?",o:["Giữ vị trí chiến lược","Là hình thức cơ bản","Nền tảng cơ bản trong sự nghiệp bảo vệ ANQG"],a:0},
   {id:"10.13",ch:10,q:"Mục đích của phong trào toàn dân bảo vệ ANTQ?",o:["Xây dựng địa phương không có tệ nạn xã hội","Xây dựng và bảo vệ Tổ quốc Việt Nam XHCN","Cả hai ý trên"],a:1},
+  // === QS Chung ===
+  {id:"QS.1",ch:12,q:"Tốc độ bắn chiến đấu súng diệt tăng B41 bao nhiêu phát/phút?",o:["6 phát/phút","3-5 phát/phút","4-6 phát/phút","5 phát/phút"],a:2},
+  {id:"QS.2",ch:12,q:"Hộp tiếp đạn của súng trường CKC chứa đủ (đầy) được bao nhiêu viên đạn?",o:["7 viên","8 viên","9 viên","10 viên"],a:3},
+  {id:"QS.3",ch:12,q:"Tác dụng của súng tiểu liên AK?",o:["Để tiêu diệt sinh lực địch bằng hỏa lực","Được người chiến sĩ sử dụng hỏa lực, lưỡi lê, báng sung để tiêu diệt sinh lực địch","Được người chiến sĩ sử dụng hỏa lực, lưỡi lê để tiêu diệt sinh lực địch","Cả ba đều đúng"],a:1},
+  {id:"QS.4",ch:12,q:"Tầm bắn thẳng của súng trường CKC mục tiêu cao 1.5m là?",o:["525 m","530 m","535 m","540 m"],a:0},
+  {id:"QS.5",ch:15,q:"Những tính chất quan trọng của bản đồ số?",o:["Thể hiện không gian ảo tương đương không gian thực","Thể hiện không gian hai chiều, sử dụng phép chiếu nhiều chiều","Thể hiện không gian ba chiều, sử dụng phép chiếu nhiều chiều để khảo sát, cung cấp thông tin bằng máy tính, mạng","Thể hiện không gian ba chiều, có khả năng cung cấp thông tin bằng máy tính, mạng"],a:2},
+  {id:"QS.6",ch:12,q:"Hình thức bắn nào là hỏa lực chủ yếu của súng tiểu liên AK?",o:["Phát một","Liên thanh","Liên thanh và phát một","Cả ba đều đúng"],a:1},
+  {id:"QS.7",ch:13,q:"Nụ xòe phát lửa có nhạy và dễ hút ẩm không? Cách bảo quản?",o:["Rất nhạy và dễ hút ẩm nên phải giữ gìn và bảo quản cẩn thận","Rất nhạy cháy nên dễ hút ẩm, phải bảo quản riêng rẽ nơi khô ráo","Rất nhạy nhưng cũng dễ hút ẩm nên phải giữ gìn cẩn thận","Rất nhạy nên phải giữ gìn và bảo quản cẩn thận"],a:0},
+  {id:"QS.8",ch:13,q:"Chất độc Sarin thường được sử dụng ở dạng nào?",o:["Thể bột làm nhiễm độc địa hình","Thể giọt làm nhiễm độc không khí","Giọt nhỏ làm nhiễm độc địa hình","Hơi sương gây nhiễm độc không khí"],a:3},
+  {id:"QS.9",ch:12,q:"Tầm bắn thẳng của súng tiểu liên AK mục tiêu cao 0.5m là?",o:["325m","330m","335m","340m"],a:2},
+  {id:"QS.10",ch:12,q:"Tầm sát thương đầu đạn súng trường CKC là bao nhiêu m?",o:["1500m","1700m","1900m","1600m"],a:0},
+  {id:"QS.11",ch:15,q:"Trong bản đồ địa hình đồng bằng tỷ lệ 1/25.000 khoảng cách chênh giữa bình độ cái?",o:["45","35","25","30"],a:2},
+  {id:"QS.12",ch:12,q:"Góc nảy của súng tiểu liên AK được hiểu như thế nào là đúng?",o:["Là góc tạo bởi khi đã lấy xong đường ngắm và trục nòng súng ở thời điểm của đầu đạn bay","Là góc tạo bởi trục nòng súng khi đã lấy đường ngắm và trục nòng súng ở thời điểm đạn bay ra khỏi nóng súng","Là góc tạo bởi trục nòng súng khi đã lấy xong đường ngắm và trục nòng súng ở thời điểm đạn bay ra khỏi nòng","Là góc tạo bởi trục nòng súng khi đã lấy đường ngắm và trục nòng súng ở thời điểm đạn ra khỏi mặt cắt miệng nòng súng"],a:3},
+  {id:"QS.13",ch:14,q:"Trong chiến đấu tiến công, công tác chuẩn bị chiến đấu được làm như thế nào?",o:["Đầy đủ, tỉ mỉ, tích cực, chủ động, sáng tạo","Thường xuyên, nhanh chóng, chuẩn xác và kịp thời","Đầy đủ, tỉ mỉ, nhanh chóng, và chuẩn xác","Cả ba đều đúng"],a:1},
+  {id:"QS.14",ch:12,q:"Súng trường CKC dùng chung đạn với những súng bộ binh nào?",o:["Súng tiểu liên AK, súng trường tự động K63 và súng trung liên RDP, RPK","Súng tiểu liên AK, súng trường K44, súng trung liên RDP, RPK và súng K6","Súng tiểu liên AK, súng trung liên RDP, RPK","Súng tiểu liên AK, súng trường K44 và súng trung liên RPD, RPK"],a:0},
+  {id:"QS.15",ch:14,q:"Trong chiến đấu phòng ngự yêu cầu chiến thuật đặt ra?",o:["Bí mật, bất ngờ, tinh khôn, mưu mẹo","Kiên cường, mưu trí chủ động đánh địch","Bất ngờ, tinh khôn","Cả A, B, C đều đúng"],a:1},
+  {id:"QS.16",ch:12,q:"Mỗi hộp băng đạn của súng RĐP chứa đủ được bao nhiêu viên đạn?",o:["70 viên","80 viên","90 viên","100 viên"],a:3},
+  {id:"QS.17",ch:15,q:"Những ưu điểm quan trọng của bản đồ số trong quân sự là gì?",o:["Nhận biết mục tiêu từ góc nhìn không gian hai chiều","Đánh giá địa hình tỉ mỉ, toàn diện và chính xác, giúp nhận biết mục tiêu, giảm thời gian trinh sát, chuẩn bị","Đánh giá toàn diện và chính xác, giúp nhận biết mục tiêu, giảm thời gian trinh sát chuẩn bị","Nhận biết mục tiêu từ góc nhìn không gian 1 chiều"],a:1},
+  {id:"QS.18",ch:12,q:"Đường ngắm cơ bản của súng tiểu liên AK?",o:["Là đường thẳng từ đỉnh đầu ngắm thẳng với điểm định bắn trên mục tiêu","Là đường thẳng từ mắt người ngắm qua chính giữa mép trên khe ngắm","Là đường thẳng từ mắt người ngắm qua khe thước ngắm đến đỉnh đầu ngắm, mép trên đỉnh đầu ngắm bằng mép khe ngắm, mặt súng không nghiêng","Là đường thẳng từ mắt người ngắm đi qua chính giữa khe hở thước ngắm đến đỉnh đầu ngắm thẳng với điểm định bắn"],a:2},
+  {id:"QS.19",ch:13,q:"Phương thức nổ mặt đất tạo ra?",o:["Nhiễm xạ không khí, gây ô nhiễm môi trường, cản trở các phương tiện bay","Khu nhiễm xạ rộng lớn với mức bức xạ cao gây cản trở chiến đấu","Khu nhiễm xạ hẹp với mức bức xạ thấp gây cản trở chiến đấu","Chủ yếu làm nhiễm xạ không khí, gây ô nhiễm môi trường"],a:1},
+  {id:"QS.20",ch:14,q:"Trong chiến đấu, đối với người chiến sĩ, địa hình – khí hậu có vai trò ảnh hưởng?",o:["Quan trọng","Quyết định","Trực tiếp","Chủ yếu"],a:2},
+  {id:"QS.21",ch:12,q:"Tính năng chiến đấu của súng trường CKC bắn máy bay, quân dù trong vòng bao nhiêu m?",o:["300m","400m","500m","600m"],a:2},
+  {id:"QS.22",ch:15,q:"Giãn cách giữa các đường bình độ con trên bản đồ địa hình đồng bằng?",o:["Tỷ lệ 1/25.000, 1/50.000, 1/100.000 là 15m, 25m, 35m","Tỷ lệ 1/25.000, 1/50.000, 1/100.000 là 10m, 50m, 100m","Tỷ lệ 1/25.000, 1/50.000, 1/100.000 là 10m, 15m, 20m","Tỷ lệ 1/25.000, 1/50.000, 1/100.000 là 5m, 10m, 25m"],a:3},
+  {id:"QS.23",ch:12,q:"Tính năng chiến đấu đạn B41?",o:["Với góc chạm 90°, xuyên thép 280mm, xuyên cát 600mm","Với góc chạm 90° xuyên được thép dày 300mm, xuyên cát trên 700mm","Với góc chạm 90°, xuyên thép 280mm, xuyên bê tông dày 900mm và xuyên cát trên 800mm","Với góc chạm 90°, xuyên thép 280mm, xuyên bê tông dày 900mm và xuyên cát trên 900mm"],a:2},
+  {id:"QS.24",ch:12,q:"Đặc điểm hình dáng đường đạn của súng tiểu liên AK?",o:["Là một đường parapol không cân","Đường đạn là một đường cong elip do trọng tâm của đầu đạn vạch ra khi bay trong không gian","Là một đường cong không đều","Đường đạn trọng tâm của đầu đạn vạch ra khi bay trong không gian"],a:0},
+  {id:"QS.25",ch:13,q:"Nhân tố sát thương phá hoại đặc trưng của vũ khí hạt nhân?",o:["Sóng xung kích","Bức xạ xuyên, chất phóng xạ","Bức xạ quang","Sóng xung kích, hiệu ứng điện tử"],a:1},
+  {id:"QS.26",ch:12,q:"Tốc độ lớn nhất của đạn B41 là bao nhiêu m/s?",o:["280 m/s","310 m/s","290 m/s","300 m/s"],a:3},
+  {id:"QS.27",ch:13,q:"Chất độc Sarin tồn tại ở dạng?",o:["Lỏng, màu nâu tối, mùi hoa quả héo","Lỏng, có mùi, tan tốt trong nước","Lỏng, không màu, không mùi, tan tốt trong nước","Lỏng, màu vàng, mùi hoa quả thối"],a:2},
+  {id:"QS.28",ch:14,q:"Người chiến sĩ chỉ được rời khỏi vị trí chiến đấu khi?",o:["Thời cơ tiêu diệt địch cho phép trong phạm vi bắn hoặc khi có lệnh cấp trên","Thời cơ tiêu diệt không hiệu quả hoặc khi có lệnh cấp trên","Thời cơ tiêu diệt địch cho phép không trong phạm vi bắn hoặc khi chưa có lệnh cấp trên","Cả ba đáp án trên đều đúng"],a:0},
+  {id:"QS.29",ch:12,q:"Cấu tạo lớn súng tiểu liên AK?",o:["Có 08 bộ phận","Có 09 bộ phận","Có 10 bộ phận","Có 11 bộ phận"],a:3},
+  {id:"QS.30",ch:15,q:"Tác dụng của giản đồ đo góc lệch trong bản đồ địa hình quân sự là gì?",o:["Để xác định góc phương vị trong các khoảng thời gian","Để xác định góc phương vị","Để so sánh và tính các phương vị","Để tính toán và đo góc phương vị"],a:2},
+  {id:"QS.31",ch:12,q:"Có bao nhiêu nguyên nhân gây ra góc nẩy của súng AK?",o:["Do lỗ trích khí, sự chênh lệch áp suất đầu nòng và do va chạm","Do va chạm, do rung động của nòng súng và sự chênh lệch áp suất đầu nòng","Do đạn chuyển động tịnh tiến trong nòng súng, do lỗ trích khí và do va chạm","Do va chạm, do giao động của nòng súng và do súng giật lùi"],a:3},
+  {id:"QS.32",ch:13,q:"Tính năng, tác dụng của nụ xòe?",o:["Dùng để kích hoạt dây chuyền nổ và dùng để kích nổ các vật liệu nổ khác","Dùng để phát lửa đốt cháy dây cháy chậm hoặc làm kíp nổ trực tiếp","Dùng để kích hoạt dây truyền nổ các vật liệu nổ khác","Dùng để phát lửa đốt cháy dây cháy chậm và để kích hoạt dây truyền nổ"],a:1},
+  {id:"QS.33",ch:13,q:"Các nhân tố sát thương phá hoại chủ yếu tức thời của vũ khí hạt nhân là gì?",o:["Bức xạ xuyên, chất phóng xạ","Sóng xung kích","Sóng xung kích, bức xạ quang","Bức xạ xuyên"],a:2},
+  {id:"QS.34",ch:14,q:"Trong chiến đấu tiến công, công tác phối hợp hiệp đồng được xác định là?",o:["Tích cực, chủ động, thường xuyên, liên tục","Tích cực, chủ động, hiệp đồng khi có thời cơ","Tích cực, liên tục hiệp đồng khi có lệnh của cấp trên","Cả 3 đáp án trên đều đúng"],a:0},
+  {id:"QS.35",ch:12,q:"Súng diệt tăng B41 có tầm bắn thẳng với mục tiêu cao 2m là bao nhiêu?",o:["100m","150m","250m","200m"],a:3},
+  {id:"QS.36",ch:13,q:"Tốc độ truyền nổ của dây nổ là bao nhiêu m/s?",o:["6500 m/s","6000 m/s","5500 m/s","5000 m/s"],a:0},
+  {id:"QS.37",ch:15,q:"Xác định tọa độ địa lý trong bản đồ địa hình quân sự căn cứ vào?",o:["Dựa vào thang chia độ rộng ở trên khung bản đồ","Không dựa vào thang chia độ ở trên khung của mỗi tờ bản đồ","Dựa vào thang chia độ ở trên khung của mỗi tờ bản đồ địa hình","Dựa vào khung của mỗi tờ bản đồ địa hình"],a:2},
+  {id:"QS.38",ch:13,q:"Chất độc thần kinh là loại chất độc:",o:["Làm bệnh thần kinh","Xâm nhập vào cơ thể qua nhiều con đường","Làm bệnh thần kinh làm mất sức chiến đấu","Xâm nhập vào cơ thể qua nhiều con đường, gây tác hại cho hệ thần kinh dẫn tới chết nhanh chóng"],a:3},
+  {id:"QS.39",ch:14,q:"Hỏa lực liên hoàn là hỏa lực?",o:["Đa chiều, rộng khắp mọi hướng","Liên tục","Không liên tục","Phát huy tối đa hỏa lực bắn tập trung về hướng bộ binh địch tấn công"],a:0},
+  {id:"QS.40",ch:12,q:"Tầm bắn thẳng của súng trường CKC với mục tiêu cao 0.5m là?",o:["330m","340m","350m","360m"],a:2},
+  {id:"QS.41",ch:15,q:"Tỷ lệ bản đồ là gì?",o:["Tỷ số giữa độ dài trên bản đồ với độ dài thật trên thực địa","Tỷ số giữa diện tích bản đồ với diện tích thật trên thực địa","Tỷ số độ dài trên bản đồ với diện tích thật trên thực địa","Tỷ số giữa diện tích bản đồ với độ dài thật trên thực địa"],a:0},
+  {id:"QS.42",ch:12,q:"Định nghĩa đường ngắm đúng:",o:["Là đường ngắm cơ bản xác định trước khi bắn vào điểm định ngắm với mặt súng hơi nghiêng","Là đường ngắm cơ bản xác định vào điểm định ngắm với mặt súng tương đối thăng bằng","Là đường ngắm cơ bản xác định vào điểm định ngắm trên mục tiêu với mặt súng thăng bằng","Là đường ngắm cơ bản xác định điểm định bằng trên mục tiêu với mặt súng hơi nghiêng"],a:2},
+  {id:"QS.43",ch:13,q:"Thuốc nổ Tolit có hút ẩm không?",o:["Không hút ẩm","Có hút ẩm trừ thuốc bánh là không hút ẩm","Không hút ẩm trừ loại thuốc nổ bột","Cả ba đáp án trên đều đúng"],a:2},
+  {id:"QS.44",ch:13,q:"Các nhân tố sát thương phá hoại chủ yếu của vũ khí hạt nhân là gì?",o:["Sóng xung kích, sóng âm, các xung tử mạnh","Sóng xung kích, bức xạ xuyên, chất phóng xạ, hiệu ứng điện từ","Sóng xung kích, bụi đất đá bị nhiễm phóng xạ, sóng âm","Sóng xung kích, bức xạ quang, bức xạ xuyên, chất phóng xạ, hiệu ứng điện tử"],a:3},
+  {id:"QS.45",ch:14,q:"Táo bạo, kịp thời, tinh khôn, mưu mẹo?",o:["Là yêu cầu cơ bản trong chiến đấu tiến công","Là yêu cầu cơ bản trong chiến đấu phòng ngự","Là yêu cầu cơ bản trong chiến đấu phản kích","Cả 3 đáp án đều đúng"],a:0},
+  {id:"QS.46",ch:12,q:"Súng diệt tăng B40 có tầm bắn ghi trên thước ngắm đến bao nhiêu m?",o:["150m","160m","170m","140m"],a:0},
+  {id:"QS.47",ch:15,q:"Trong bản đồ địa hình đồng bằng tỉ lệ 1/25.000 khoảng cách thực tế đường bình độ con?",o:["Cách nhau 5m","Cách nhau 6m","Cách nhau 10m","Cách nhau 15m"],a:0},
+  {id:"QS.48",ch:13,q:"Nguyên lý phát lửa của nụ xòe như thế nào?",o:["Khi giật mạnh đột nhiên dây cháy chậm cháy, đốt cháy dây cháy chậm làm trực tiếp nổ kíp","Khi giật dây giật, dây kim loại soắn cọ sát vào thuốc phát lửa, đốt cháy dây cháy chậm hoặc phụt thẳng vào kíp gây nổ kíp","Khi giật mạnh đột nhiên dây cháy chậm cháy","Khi giật dây giật, dây kim loại soắn cọ sát vào thuốc phát nổ"],a:1},
+  {id:"QS.49",ch:12,q:"Tốc độ bắn chiến đấu của súng diệt tăng B40 là bao nhiêu phát/phút?",o:["4–6 phát/phút","5–7 phát/phút","6–8 phát/phút","7–9 phát/phút"],a:0},
+  {id:"QS.50",ch:12,q:"Đặc điểm hình dáng đường đạn của súng tiểu liên AK (chi tiết)?",o:["Đường cong không cân đối, góc phóng nhỏ hơn góc rơi, tốc độ viên đạn thấp hơn sơ tốc đầu đạn","Đường cong không cân đối, góc phóng nhỏ hơn góc rơi, đỉnh đầu đạn nằm gần về phía điểm tới","Đường cong Elip, đỉnh đường đạn nằm trên đỉnh Elip","Đường cong Elip, đỉnh đường đạn nằm trên đỉnh Elip, tốc độ viên đạn thấp hơn sơ tốc đầu đạn"],a:1},
+  {id:"QS.51",ch:13,q:"Độ nhạy nổ của thuốc nổ Melilit và những điểm chú ý khi sử dụng là gì?",o:["Độ nhạy bình thường nhưng phải cẩn thận do dễ cháy khi hút ẩm","Độ nhạy cao, va đập dễ gây nguy hiểm","Có độ nhạy bình thường","Độ nhạy cao, khi cọ sát, va đập dễ gây nguy hiểm trong sử dụng bảo quản"],a:3},
+  {id:"QS.52",ch:12,q:"Bắn máy bay, quân dù tầm bắn thẳng của súng RĐP là bao nhiêu m?",o:["400m – 600m","500m","600m – 800m","700m"],a:1},
+  {id:"QS.53",ch:12,q:"Bắn súng AK ở cự ly mục tiêu 100m, thước ngắm 3 thì ngắm vào đâu và đường đạn lên cao bao nhiêu?",o:["Ngắm mép dưới chính mục tiêu, đường đạn lên cao 25cm","Ngắm mép dưới chính giữa mục tiêu, đường đạn lên cao 26cm","Ngắm mép dưới chính mục tiêu, đường đạn lên cao 27cm","Ngắm mép dưới chính giữa mục tiêu, đường đạn lên cao 28cm"],a:3},
+  {id:"QS.54",ch:12,q:"Cách tính thành tích bắn bài 1 của súng tiểu liên AK ở các mức nào?",o:["Giỏi 29 điểm, TB 19 điểm, ưu tú 30 điểm","Giỏi 25–30 điểm; TB 19 điểm","Ưu tú: 30; giỏi 29; khá 20–23; TB 15–19 điểm","Giỏi 25–30 điểm; khá 20–24; TB 15–19 điểm"],a:3},
+  {id:"QS.55",ch:12,q:"Tốc độ bắn của súng trường CKC là bao nhiêu phát/phút?",o:["20–35 phát/phút","35–40 phát/phút","20–50 phát/phút","20–60 phát/phút"],a:1},
+  {id:"QS.56",ch:15,q:"Thước tỷ lệ thẳng trong bản đồ địa hình quân sự được sử dụng để làm gì?",o:["Đo minh họa cụ thể tỷ lệ trên các tấm bản đồ","Đo chiều dài thực của đoạn thẳng trên bản đồ","Đo và tính toán độ dốc của bản đồ","Đo và tính toán tỷ lệ bản đồ"],a:1},
+  {id:"QS.57",ch:13,q:"Tính năng của dây nổ như thế nào?",o:["Truyền nổ và phá hủy một số mục tiêu, nòng pháo, gây cháy nổ các chất liệu dễ cháy","Dùng để truyền nổ nhiều lượng nổ cùng một lúc","Dùng để truyền nổ nhiều lượng nổ cùng một lúc, gây nổ phá một số mục tiêu nhỏ, đào hố đặt thuốc phá cây, phá bãi mìn","Dùng để truyền nổ lượng nổ cùng một lúc và phá hủy một số mục tiêu đặc biệt kiên cố"],a:2},
+  {id:"QS.58",ch:13,q:"Tính chất đặc trưng nhận biết thuốc nổ C4?",o:["Thuốc Hexogen bột trộn với chất dính, màu trắng đục, không hút ẩm, không tan trong nước","Thuốc bột trộn với chất dính màu trắng đục","Thuốc bột trộn với chất dính màu trắng đục, hút ẩm, tan trong nước tạo thành dung dịch nhạy nổ","Thuốc Hexogen bột trộn với chất dính, màu trắng đục, không hút ẩm, không tan trong nước, có độ dẻo cao"],a:3},
+  {id:"QS.59",ch:13,q:"Để đề phòng chất độc thần kinh cần phải làm gì?",o:["Mặc bộ phòng da, uống thuốc phòng chất độc thần kinh","Chỉ cần đeo mặt nạ phòng độc","Đeo mặt nạ phòng độc, mặc bộ phòng da, uống thuốc phòng chất độc thần kinh","Chỉ cần uống thuốc phòng chống chất độc thần kinh"],a:2},
+  {id:"QS.60",ch:13,q:"Trạng thái chiến đấu của chất độc thần kinh là gì?",o:["Chủ yếu là giọt lỏng gây nhiễm độc không khí","Hơi, sương, giọt lỏng, xâm nhập vào cơ thể qua hô hấp, tiếp xúc","Hơi xâm nhập vào cơ thể qua hô hấp, tiếp xúc","Chủ yếu là giọt lỏng gây nhiễm độc cho người"],a:1},
+  {id:"QS.61",ch:14,q:"Trong chiến đấu phòng ngự công tác chuẩn bị chiến đấu được làm?",o:["Đầy đủ, tỉ mỉ","Nhanh chóng, kịp thời","Chuẩn xác, thường xuyên","Cả 3 đáp án trên đều đúng"],a:0},
+  {id:"QS.62",ch:12,q:"Tác dụng súng diệt tăng B40?",o:["Vũ khí có uy lực mạnh của tiểu đội bộ binh, tiêu diệt xe tăng xe bọc thép, pháo tự hành","Tiêu diệt xe tăng, xe bọc thép, các vật kiến trúc khác","Vũ khí có uy lực mạnh, tiêu diệt xe tăng, xe bọc thép, pháo tự hành, sinh lực địch ẩn nấp trong công sự hoặc vật kiến trúc không kiên cố","Tiêu diệt xe tăng, xe bọc thép, vật kiến trúc không kiên cố, pháo tự hành"],a:2},
+  {id:"QS.63",ch:15,q:"Bản đồ địa hình quân sự thể hiện độ cao của dáng đất bằng cách nào?",o:["Bằng chữ và màu sắc","Bằng đường bình độ đứt quãng có độ dày thưa như nhau","Bằng số và bằng màu sắc","Bằng các đường bình độ là các đường vòng tròn khép kín, có độ dày thưa khác nhau"],a:3},
+  {id:"QS.64",ch:12,q:"Cách khắc phục hiện tượng giật của súng tiểu liên AK khi bắn?",o:["Kẹp súng về phía mình từ tay trái, giữ cho súng chắc đều bền","Thực hiện động tác bắn chính xác","Kẹp súng vào nách khi bắn đứng hoặc buộc căng dây súng","Thực hiện động tác bắn chính xác, giữ súng chắc, đều để hạn chế góc nẩy của súng"],a:3},
+  {id:"QS.65",ch:12,q:"Khái niệm hiện tượng súng giật:",o:["Do phản lực của các bộ phận chuyển động về trước khi bóp cò và do áp suất thuốc đẩy về sau qua đáy vỏ đạn","Là tổng hợp lực chuyển động của các bộ phận của súng","Do phản lực của các bộ phận chuyển động về trước","Do tổng hợp lực chuyển động của các bộ phận súng khi bắn và áp lực khí thuốc truyền về sau qua đáy vỏ đạn"],a:3},
+  {id:"QS.66",ch:14,q:"Bí mật, bất ngờ, tinh khôn, mưu mẹo?",o:["Là yêu cầu cơ bản trong chiến đấu tiến công","Là yêu cầu cơ bản trong chiến đấu phòng ngự","Không phải là một trong những yêu cầu quan trọng nhất","Cả 3 đáp án trên đều đúng"],a:1},
+  {id:"QS.67",ch:13,q:"Tác dụng của thuốc nổ trong mục đích quân sự và kinh tế như thế nào?",o:["Có sức phá hoại rất lớn, tiêu diệt sinh lực địch, phá hủy phương tiện chiến tranh, công sự","Khai thác vật liệu xây dựng","Có sức công phá lớn, tiêu diệt sinh lực địch, phá hủy phương tiện chiến tranh, công sự, vật cản, xây dựng công sự, khai thác vật liệu","Có sức phá hoại rất lớn, phá hoại các công trình, ngoài ra khai thác vật liệu xây dựng"],a:2},
+  {id:"QS.68",ch:13,q:"Mang vác lượng nổ bằng cách nào?",o:["Hành quân, trườn","Đi khom, chạy khom, lê trườn","Hành quân, chạy, trườn, lăn ngắn hoặc lăn dài","Đi khom, chạy khom, lê, trườn và hành quân"],a:3},
+  {id:"QS.69",ch:15,q:"Các ký hiệu quân sự trên bản đồ địa hình quân sự được thể hiện như thế nào?",o:["Bằng chữ viết tắt thuật ngữ quân sự, ký hiệu quy ước quốc tế các phương tiện, quân binh chủng","Bằng chữ viết la tinh và ký hiệu thuật ngữ quân sự quy ước","Bằng chữ viết tắt thuật ngữ quân sự, ký hiệu quy ước các phương tiện, quân binh chủng","Bằng ký hiệu bằng số tự nhiên và ký hiệu quy ước các phương tiện, quân binh chủng"],a:2},
+  // === Bản đồ GAUSS ===
+  {id:"BĐ.1",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ Gauss (bắc bán cầu) số hiệu J-30-A là?",o:["Từ 32° tới 36° vĩ bắc; Từ 6° kinh đông đến 3° kinh đông","Từ 34° tới 36° vĩ bắc; Từ 3° kinh tây đến 6° kinh tây","Từ 34° tới 36° vĩ bắc; Từ 6° kinh tây đến 3° kinh tây","Từ 34° tới 36° vĩ bắc; Từ 6° kinh đông đến 3° kinh đông"],a:2},
+  {id:"BĐ.2",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ Gauss (bắc bán cầu) số hiệu P-32-D là?",o:["Từ 52° tới 56° vĩ bắc; Từ 6° kinh đông đến 12° kinh đông","Từ 52° tới 54° vĩ bắc; Từ 9° kinh đông đến 12° kinh đông","Từ 52° tới 54° vĩ bắc; Từ 6° kinh đông đến 9° kinh đông","Từ 54° tới 56° vĩ bắc; Từ 9° kinh đông đến 12° kinh đông"],a:1},
+  {id:"BĐ.3",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ Gauss (bắc bán cầu) số hiệu H-48-C là?",o:["Từ 26° tới 28° vĩ bắc; Từ 102° kinh đông đến 108° kinh đông","Từ 28° tới 32° vĩ bắc; Từ 105° kinh đông đến 108° kinh đông","Từ 28° tới 30° vĩ bắc; Từ 102° kinh tây đến 105° kinh tây","Từ 28° tới 30° vĩ bắc; Từ 102° kinh đông đến 105° kinh đông"],a:3},
+  {id:"BĐ.4",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ Gauss (bắc bán cầu) số hiệu F-49-12 là?",o:["Từ 23°40' tới 24° vĩ bắc; Từ 113°30' kinh đông đến 114° kinh đông","Từ 23°30' tới 24° vĩ bắc; Từ 113°30' kinh đông đến 114° kinh đông","Từ 23° tới 23°30' vĩ bắc; Từ 113° kinh đông đến 113°30' kinh đông","Từ 23° tới 23°30' vĩ bắc; Từ 113°30' kinh đông đến 114° kinh đông"],a:0},
+  {id:"BĐ.5",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ Gauss (bắc bán cầu) số hiệu E-47-25 là?",o:["Từ 19°40' tới 20° vĩ bắc; Từ 96° kinh đông đến 96°30' kinh đông","Từ 19°30' tới 20° vĩ bắc; Từ 96°30' kinh đông đến 97° kinh đông","Từ 19° tới 19°20' vĩ bắc; Từ 96° kinh đông đến 96°30' kinh đông","Từ 19° tới 19°30' vĩ bắc; Từ 96°30' kinh đông đến 97° kinh đông"],a:2},
+  {id:"BĐ.6",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ Gauss (bắc bán cầu) số hiệu K-17-144 là?",o:["Từ 36° tới 36°20' vĩ bắc; Từ 78°30' kinh tây đến 78° kinh tây","Từ 36° tới 36°20' vĩ bắc; Từ 78°30' kinh đông đến 78° kinh đông","Từ 36°20' tới 36°40' vĩ bắc; Từ 108° kinh đông đến 108°30' kinh đông","Từ 36° tới 36°30' vĩ bắc; Từ 108°20' kinh tây đến 108° kinh tây"],a:0},
+  {id:"BĐ.7",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ Gauss (bắc bán cầu) số hiệu L-42 là?",o:["Từ 40° tới 42° vĩ bắc; Từ 66° kinh đông đến 72° kinh đông","Từ 40° tới 44° vĩ bắc; Từ 66° kinh tây đến 72° kinh tây","Từ 40° tới 44° vĩ bắc; Từ 66° kinh đông đến 72° kinh đông","Từ 36° tới 40° vĩ bắc; Từ 72° kinh đông đến 66° kinh đông"],a:2},
+  // === Bản đồ UTM ===
+  {id:"BĐ.8",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ UTM số hiệu NF-48-C là?",o:["Từ 20° tới 22° vĩ bắc; Từ 105° kinh đông đến 108° kinh đông","Từ 20° tới 22° vĩ bắc; Từ 102° kinh đông đến 105° kinh đông","Từ 22° tới 24° vĩ bắc; Từ 105° kinh đông đến 108° kinh đông","Từ 20° tới 22° vĩ bắc; Từ 102° kinh đông đến 108° kinh đông"],a:1},
+  {id:"BĐ.9",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ UTM số hiệu NG-47-16 là?",o:["Từ 24° tới 24°30' vĩ bắc; Từ 101° kinh đông đến 102° kinh đông","Từ 24° tới 25° vĩ bắc; Từ 100° kinh đông đến 101° kinh đông","Từ 24° tới 25° vĩ bắc; Từ 100°30' kinh đông đến 102° kinh đông","Từ 25° tới 25°30' vĩ bắc; Từ 100°30' kinh đông đến 102° kinh đông"],a:0},
+  {id:"BĐ.10",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ UTM số hiệu ND-49-D là?",o:["Từ 14° tới 16° vĩ bắc; Từ 108° kinh đông đến 111° kinh đông","Từ 12° tới 14° vĩ bắc; Từ 111° kinh đông đến 114° kinh đông","Từ 12° tới 14° vĩ bắc; Từ 108° kinh đông đến 111° kinh đông","Từ 12° tới 16° vĩ bắc; Từ 108° kinh đông đến 108°15' kinh đông"],a:2},
+  {id:"BĐ.11",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ UTM số hiệu SC-47-D là?",o:["Từ 10° vĩ nam tới 12° vĩ nam; Từ 96° kinh đông đến 99° kinh đông","Từ 10° vĩ nam tới 12° vĩ nam; Từ 99° kinh đông đến 102° kinh đông","Từ 8° vĩ bắc tới 10° vĩ bắc; Từ 96° kinh đông đến 102° kinh đông","Từ 10° vĩ bắc tới 12° vĩ bắc; Từ 96° kinh đông đến 99° kinh đông"],a:0},
+  {id:"BĐ.12",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ UTM số hiệu 6151 (gốc tọa độ 75° đông; 4° nam) là?",o:["Từ 21°30' tới 22° vĩ bắc; Từ 106° kinh đông đến 106°30' kinh đông","Từ 21° tới 21°30' vĩ bắc; Từ 105°30' kinh đông đến 106° kinh đông","Từ 21°30' tới 22° vĩ bắc; Từ 105°30' kinh đông đến 106° kinh đông","Từ 21°15' tới 21°30' vĩ bắc; Từ 106° kinh đông đến 106°30' kinh đông"],a:2},
+  {id:"BĐ.13",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ UTM số hiệu 1920 (gốc tọa độ 75° đông; 4° nam) là?",o:["Từ 6° tới 6°20' vĩ bắc; Từ 85° kinh đông đến 85°30' kinh đông","Từ 5°30' tới 6° vĩ bắc; Từ 85° kinh đông đến 85°30' kinh đông","Từ 5°30' tới 6° vĩ bắc; Từ 84°30' kinh đông đến 85° kinh đông","Từ 5°40' tới 6° vĩ bắc; Từ 84°30' kinh đông đến 85° kinh đông"],a:2},
+  {id:"BĐ.14",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ UTM số hiệu 3031-I (gốc tọa độ 75° đông; 4° nam) là?",o:["Từ 10°45' tới 11° vĩ bắc; Từ 90°45' kinh đông đến 91° kinh đông","Từ 11° tới 11°30' vĩ bắc; Từ 90° kinh đông đến 90°30' kinh đông","Từ 11°15' tới 11°30' vĩ bắc; Từ 90° kinh đông đến 90°15' kinh đông","Từ 11°15' tới 11°30' vĩ bắc; Từ 90°15' kinh đông đến 90°30' kinh đông"],a:2},
+  {id:"BĐ.15",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ UTM số hiệu SF-46-02 là?",o:["Từ 21° tới 22° vĩ bắc; Từ 91°30' kinh đông đến 93° kinh đông","Từ 20° vĩ nam tới 21° vĩ nam; Từ 92° kinh đông đến 93° kinh đông","Từ 20° vĩ bắc tới 21° vĩ bắc; Từ 91° kinh đông đến 93° kinh đông","Từ 20° vĩ nam tới 21° vĩ nam; Từ 91°30' kinh đông đến 93° kinh đông"],a:1},
+  // === Bản đồ VN-2000 ===
+  {id:"BĐ.16",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ VN-2000 số hiệu D-49-D-04 là?",o:["Từ 12° tới 14° vĩ bắc; Từ 112° kinh đông đến 114° kinh đông","Từ 13° tới 14° vĩ bắc; Từ 112° kinh đông đến 113° kinh đông","Từ 12° tới 13° vĩ bắc; Từ 112°30' kinh đông đến 114° kinh đông","Từ 12° tới 12°30' vĩ bắc; Từ 108°30' kinh đông đến 109° kinh đông"],a:3},
+  {id:"BĐ.17",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ VN-2000 số hiệu C-48-12 là?",o:["Từ 11°40' tới 12° vĩ bắc; Từ 107° kinh đông đến 108° kinh đông","Từ 11° tới 11°30' vĩ bắc; Từ 107°45' kinh đông đến 108° kinh đông","Từ 11°45' tới 12° vĩ bắc; Từ 106° kinh đông đến 108° kinh đông","Từ 11°30' tới 12° vĩ bắc; Từ 107°30' kinh đông đến 108° kinh đông"],a:3},
+  {id:"BĐ.18",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ VN-2000 số hiệu E-48-C là?",o:["Từ 16° tới 18° vĩ bắc; Từ 102° kinh đông đến 105° kinh đông","Từ 16°30' tới 17° vĩ bắc; Từ 102° kinh đông đến 108° kinh đông","Từ 16° tới 20° vĩ bắc; Từ 102° kinh đông đến 105° kinh đông","Từ 18° tới 20° vĩ bắc; Từ 102°30' kinh đông đến 103° kinh đông"],a:0},
+  {id:"BĐ.19",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ VN-2000 số hiệu F-49-85-C là?",o:["Từ 20° tới 20°30' vĩ bắc; Từ 108° kinh đông đến 108°30' kinh đông","Từ 20° tới 20°15' vĩ bắc; Từ 108° kinh đông đến 108°15' kinh đông","Từ 20°45' tới 21° vĩ bắc; Từ 108°15' kinh đông đến 108°30' kinh đông","Từ 20° tới 20°10' vĩ bắc; Từ 108°30' kinh đông đến 109° kinh đông"],a:1},
+  {id:"BĐ.20",ch:15,q:"Tìm số hiệu mảnh bản đồ VN-2000 tương đương với mảnh UTM (gốc 75° đông; 4° nam) NF-48-16?",o:["F-48-D-01","F-48-D-02","F-48-D-04","F-48-D-03"],a:2},
+  {id:"BĐ.21",ch:15,q:"Tìm số hiệu mảnh bản đồ VN-2000 tương đương với mảnh UTM (gốc 75° đông; 4° nam) 6145?",o:["E-48-41","E-48-42","E-48-43","E-48-44"],a:0},
+  {id:"BĐ.22",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ Gauss (bắc bán cầu) số hiệu F-48-133-A là?",o:["Từ 20° tới 20°20' vĩ bắc; Từ 102° kinh đông đến 102°10' kinh đông","Từ 20°10' tới 20°20' vĩ bắc; Từ 102° kinh đông đến 102°15' kinh đông","Từ 20°15' tới 20°30' vĩ bắc; Từ 102° kinh đông đến 102°30' kinh đông","Từ 20°15' tới 20°30' vĩ bắc; Từ 102° kinh đông đến 102°15' kinh đông"],a:3},
+  {id:"BĐ.23",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ UTM số hiệu 5030-IV (gốc tọa độ 75° đông; 4° nam) là?",o:["Từ 10°45' tới 11° vĩ bắc; Từ 100° kinh đông đến 100°15' kinh đông","Từ 11° tới 11°30' vĩ bắc; Từ 100° kinh đông đến 100°30' kinh đông","Từ 10°30' tới 10°45' vĩ bắc; Từ 100°15' kinh đông đến 100°30' kinh đông","Từ 11°15' tới 11°30' vĩ bắc; Từ 90°15' kinh đông đến 90°30' kinh đông"],a:0},
+  {id:"BĐ.24",ch:15,q:"Giới hạn tọa độ địa lý mảnh bản đồ VN-2000 số hiệu F-48-A-01 là?",o:["Từ 20° tới 24° vĩ bắc; Từ 102° kinh đông đến 108° kinh đông","Từ 23° tới 24° vĩ bắc; Từ 102° kinh đông đến 103°30' kinh đông","Từ 22° tới 23° vĩ bắc; Từ 102° kinh đông đến 103° kinh đông","Từ 20° tới 22° vĩ bắc; Từ 103°30' kinh đông đến 105° kinh đông"],a:1},
+];
+
+const GRIDS=[
+  {id:1,t:"GAUSS",c:["K-49-78-C-d","K-49-78-D-c","K-49-78-D-d","K-49-90-A-b","K-49-90-B-a","K-49-90-B-b","K-49-90-A-d","K-49-90-B-c","K-49-90-B-d"],b:[1,2,3,4,5,6,7,8]},
+  {id:2,t:"GAUSS",c:["K-12-79-C-d","K-12-79-D-c","K-12-79-D-d","K-12-91-A-b","K-12-91-B-a","K-12-91-B-b","K-12-91-A-d","K-12-91-B-c","K-12-91-B-d"],b:[0,1,2,3,5,6,7,8]},
+  {id:3,t:"GAUSS",mp:[33,33],m:["3°22'30\" Tây","43°15' Bắc"],c:["L-30-30-A-a","L-30-30-A-b","L-30-30-B-a","L-30-30-A-c","L-30-30-A-d","L-30-30-B-c","L-30-30-C-a","L-30-30-C-b","L-30-30-D-a"],b:[0,1,2,3,5,6,7,8]},
+  {id:4,t:"GAUSS",c:["J-17-144-D-c","J-17-144-D-d","J-18-133-C-c","H-17-12-B-a","H-17-12-B-b","H-18-1-A-a","H-17-12-B-c","H-17-12-B-d","H-18-1-A-c"],b:[0,2,3,5,6,8]},
+  {id:5,t:"GAUSS",c:["F-49-52-C-d","F-49-52-D-c","F-49-52-D-d","F-49-64-A-b","F-49-64-B-a","F-49-64-B-b","F-49-64-A-d","F-49-64-B-c","F-49-64-B-d"],b:[0,2,3,5,6,8]},
+  {id:6,t:"GAUSS",c:["N-13-13-A-d","N-13-13-B-c","N-13-13-B-d","N-13-13-C-b","N-13-13-D-a","N-13-13-D-b","N-13-13-C-d","N-13-13-D-c","N-13-13-D-d"],b:[0,1,2,3,5,6,7,8]},
+  {id:7,t:"UTM",c:["6052-II-SE","6152-III-SW","6152-III-SE","6051-I-NE","6151-IV-NW","6151-IV-NE","6051-I-SE","6151-IV-SW","6151-IV-SE"],b:[0,1,2,3,5,6,7,8]},
+  {id:8,t:"UTM",c:["1920-I-NW","1920-I-NE","2020-IV-NW","1920-I-SW","1920-I-SE","2020-IV-SW","1920-II-NW","1920-II-NE","2020-III-NW"],b:[0,1,2,6,7,8]},
+  {id:9,t:"UTM",mp:[33,33],m:["90° Đông","10°52'30\" Bắc"],c:["2931-II-SW","2931-II-SE","3030-III-SW","2930-I-NW","2930-I-NE","3030-IV-NW","2930-I-SW","2930-I-SE","3030-IV-SW"],b:[0,1,2,3,5,6,7,8]},
+  {id:10,t:"UTM",c:["6664-IV-NE","6664-I-NW","6664-I-NE","6664-IV-SE","6664-I-SW","6664-I-SE","6664-III-NE","6664-II-NW","6664-II-NE"],b:[0,2,3,5,6,8]},
+  {id:11,t:"UTM",mp:[33,33],m:["100°45' Đông","25°52'30\" Bắc"],c:["5160-IV-NW","5160-IV-NE","5160-I-NW","5160-IV-SW","5160-IV-SE","5160-I-SW","5160-III-NW","5160-III-NE","5160-II-NW"],b:[0,1,2,3,5,6,7,8]},
+  {id:12,t:"UTM",c:["2931-II-SW","2931-II-SE","3030-III-SW","2930-I-NW","2930-I-NE","3030-IV-NW","2930-I-SW","2930-I-SE","3030-IV-SW"],b:[0,1,2,3,7,8]},
+  {id:13,t:"UTM",c:["2931-II-SE","3030-III-SW","3030-III-SE","2930-I-NE","3030-IV-NW","3030-IV-NE","2930-I-SE","3030-IV-SW","3030-IV-SE"],b:[0,1,2,4,5,6,7,8]},
+  {id:14,t:"UTM",c:["1242-III-SE","1242-II-SW","1242-II-SE","1241-III-NE","1241-I-NW","1241-I-NE","1241-IV-SE","1241-I-SW","1241-I-SE"],b:[0,1,2,3,5,6,7,8]},
+  {id:15,t:"VN-2000",c:["E-48-96-D-b","E-48-97-C-a","E-48-97-C-b","E-48-96-D-d","E-48-97-C-c","E-48-97-C-d","D-48-12-A-b","D-48-12-B-a","D-48-12-B-b"],b:[1,2,3,5,6,7,8]},
+  {id:16,t:"VN-2000",c:["F-49-96-D-a","F-49-96-D-b","F-50-85-C-a","F-49-96-D-c","F-49-96-D-d","F-50-85-C-c","E-49-12-B-a","E-49-12-B-b","E-50-1-A-a"],b:[0,1,2,3,5,6,7,8]},
+  {id:17,t:"VN-2000",mp:[33,67],m:["108° Đông","12°45' Bắc"],c:["D-48-84-B-c","D-48-84-B-d","D-49-73-A-c","D-48-84-D-a","D-48-84-D-b","D-49-73-C-a","D-48-84-D-c","D-48-84-D-d","D-49-73-C-c"],b:[0,2,3,4,5,6,7,8]},
+  {id:18,t:"VN-2000",mp:[33,67],m:["107°52'30\" Đông","19°7'30\" Bắc"],c:["E-48-24-D-a","E-48-24-D-b","E-49-13-C-a","E-48-24-D-c","E-48-24-D-d","E-49-13-C-c","E-48-36-B-a","E-48-36-B-b","E-49-25-A-a"],b:[0,1,2,3,5,6,7,8]},
+  {id:19,t:"VN-2000",c:["D-48-84-B-c","D-48-84-B-d","D-49-73-A-c","D-48-84-D-a","D-48-84-D-b","D-49-73-C-a","D-48-84-D-c","D-48-84-D-d","D-49-73-C-c"],b:[0,2,3,4,5,6,7,8]},
+  {id:20,t:"VN-2000",c:["D-48-24-D-a","D-48-24-D-b","D-49-11-A-a","D-48-24-D-c","D-48-24-D-d","D-49-11-C-c","D-48-36-B-a","D-48-36-B-b","D-49-25-A-a"],b:[0,1,2,3,5,6,7,8]},
 ];
 
 const CH=[
@@ -210,6 +360,11 @@ const CH=[
   {id:8,n:"Bài 8: Chủ quyền biển, đảo, biên giới"},
   {id:9,n:"Bài 9: Dân quân tự vệ và dự bị động viên"},
   {id:10,n:"Bài 10: Phong trào toàn dân BV ANTQ"},
+  {id:12,n:"Súng bộ binh & kỹ thuật bắn"},
+  {id:13,n:"Thuốc nổ, chất độc & vũ khí hủy diệt"},
+  {id:14,n:"Chiến thuật tiến công & phòng ngự"},
+  {id:15,n:"Bản đồ quân sự & tọa độ"},
+  {id:16,n:"Bài tập chắp ghép bản đồ"},
 ];
 
 const L=["A","B","C","D"];
@@ -222,18 +377,39 @@ let state={mode:'home',numQ:20,chId:null,qs:[],cur:0,sel:null,done:false,score:0
 function render(){
   if(state.mode==='home') renderHome();
   else if(state.mode==='quiz') renderQuiz();
+  else if(state.mode==='gridList') renderGridList();
+  else if(state.mode==='grid') renderGrid();
   else renderResult();
 }
 
 function renderHome(){
-  let h=`<div class="home-header"><div class="logo">⭐</div><h1>Ôn tập Đường lối Quân sự</h1><p>Đại học Bách khoa Hà Nội • ${Q.length} câu hỏi • Đảo thứ tự ngẫu nhiên</p></div>`;
-  h+=`<button class="all-btn" onclick="startQuiz(null)">🎲 Ôn tất cả ${Q.length} câu</button>`;
+  const chDL=[2,3,4,5,6,7,8,9,10], chQS=[12,13,14,15];
+  const dlqs=Q.filter(q=>chDL.includes(q.ch)), qsc=Q.filter(q=>chQS.includes(q.ch));
+  const chDLdata=CH.filter(c=>chDL.includes(c.id)), chQSdata=CH.filter(c=>chQS.includes(c.id));
+  let h=`<div class="home-header"><div class="logo">⭐</div><h1>Ôn tập Quân sự</h1><p>Đại học Bách khoa Hà Nội • ${Q.length} câu hỏi • Đảo thứ tự ngẫu nhiên</p></div>`;
+
+  h+=`<div class="section-label">📘 ĐƯỜNG LỐI QUÂN SỰ</div>`;
+  h+=`<button class="all-btn" onclick="startSubject('dl')">🎲 Ôn tất cả Đường lối QS (${dlqs.length} câu)</button>`;
   h+=`<div class="chapter-grid">`;
-  CH.forEach(c=>{
+  chDLdata.forEach(c=>{
     const cnt=Q.filter(q=>q.ch===c.id).length;
     h+=`<button class="ch-btn" onclick="startQuiz(${c.id})"><span class="name">${c.n}</span><span class="count">${cnt} câu</span></button>`;
   });
-  h+=`</div><div class="footer">Tài liệu HUST • Ôn thi trắc nghiệm</div>`;
+  h+=`</div>`;
+
+  h+=`<div class="section-label" style="margin-top:28px">🔫 QUÂN SỰ CHUNG</div>`;
+  h+=`<button class="all-btn qsc" onclick="startSubject('qsc')">🎲 Ôn tất cả QS Chung (${qsc.length} câu)</button>`;
+  h+=`<div class="chapter-grid">`;
+  chQSdata.forEach(c=>{
+    const cnt=Q.filter(q=>q.ch===c.id).length;
+    h+=`<button class="ch-btn" onclick="startQuiz(${c.id})"><span class="name">${c.n}</span><span class="count">${cnt} câu</span></button>`;
+  });
+  h+=`</div>`;
+
+  h+=`<div class="section-label" style="margin-top:28px">🗺️ BÀI TẬP BẢN ĐỒ</div>`;
+  h+=`<button class="all-btn" style="background:linear-gradient(135deg,#2980b9,#3498db);box-shadow:0 4px 16px rgba(41,128,185,.25)" onclick="openGrids()">📐 ${GRIDS.length} bài tập chắp ghép bản đồ (Gauss, UTM, VN-2000)</button>`;
+
+  h+=`<div class="footer">Tài liệu HUST • Ôn thi trắc nghiệm</div>`;
   app.innerHTML=h;
 }
 
@@ -241,7 +417,13 @@ function renderQuiz(){
   const q=state.qs[state.cur];
   let h=`<div class="quiz-top"><button class="back-btn" onclick="goHome()">← Về</button><div class="quiz-meta"><span class="pos">${state.cur+1}/${state.qs.length}</span><span class="sc">✓ ${state.score}</span></div></div>`;
   h+=`<div class="bar-track"><div class="bar-fill" style="width:${((state.cur+1)/state.qs.length)*100}%"></div></div>`;
-  h+=`<div class="q-card"><div class="q-id">Câu ${q.id}</div><div class="q-text">${q.q}</div></div>`;
+  h+=`<div class="q-card"><div class="q-id">Câu ${q.id}</div><div class="q-text">${q.q}</div>`;
+  if(q.g){
+    h+=`<table class="map-grid">`;
+    for(let r=0;r<3;r++){h+=`<tr>`;for(let c=0;c<3;c++){const v=q.g[r*3+c];h+=v==='?'?`<td class="blank">❓</td>`:`<td>${v}</td>`;}h+=`</tr>`;}
+    h+=`</table>`;
+  }
+  h+=`</div>`;
   h+=`<div class="opts">`;
   q.o.forEach((opt,i)=>{
     let cls='opt';
@@ -254,10 +436,16 @@ function renderQuiz(){
     h+=`<button class="${cls}" onclick="pick(${i})"><span class="circle">${L[i]}</span><span class="txt">${opt}</span></button>`;
   });
   h+=`</div>`;
+  if(!state.done && state.cur>0){
+    h+=`<div class="nav-btns" style="margin-top:12px"><button class="prev-btn" onclick="prevQ()">← Câu trước</button></div>`;
+  }
   if(state.done){
     const ok=state.sel===q.a;
     h+=`<div class="feedback"><div class="msg ${ok?'ok':'no'}">${ok?'✓ Chính xác!':'✗ Sai! Đáp án đúng: '+L[q.a]}</div>`;
-    h+=`<button class="next-btn" onclick="nextQ()">${state.cur+1>=state.qs.length?'Xem kết quả':'Câu tiếp →'}</button></div>`;
+    h+=`<div class="nav-btns">`;
+    if(state.cur>0) h+=`<button class="prev-btn" onclick="prevQ()">← Câu trước</button>`;
+    h+=`<button class="next-btn" onclick="nextQ()">${state.cur+1>=state.qs.length?'Xem kết quả':'Câu tiếp →'}</button>`;
+    h+=`</div></div>`;
   }
   app.innerHTML=h;
 }
@@ -277,11 +465,26 @@ function renderResult(){
   } else {
     h+=`<div class="perfect">🏆 Bạn trả lời đúng tất cả!</div>`;
   }
-  h+=`<div class="result-actions"><button class="retry-btn" onclick="startQuiz(state.chId)">🔄 Làm lại</button><button class="home-btn2" onclick="goHome()">🏠 Về trang chủ</button></div>`;
+  h+=`<div class="result-actions"><button class="retry-btn" onclick="retry()">🔄 Làm lại</button><button class="home-btn2" onclick="goHome()">🏠 Về trang chủ</button></div>`;
   app.innerHTML=h;
 }
 
 window.goHome=function(){state.mode='home';render();};
+
+window.retry=function(){
+  if(state.chId==='dl'||state.chId==='qsc') startSubject(state.chId);
+  else startQuiz(state.chId);
+};
+
+window.startSubject=function(sub){
+  let pool;
+  if(sub==='dl') pool=Q.filter(q=>[2,3,4,5,6,7,8,9,10].includes(q.ch));
+  else pool=Q.filter(q=>[12,13,14,15].includes(q.ch));
+  const s=shuffle(pool);
+  state={...state,mode:'quiz',chId:sub,qs:s,cur:0,sel:null,done:false,score:0,history:[]};
+  render();
+  window.scrollTo(0,0);
+};
 
 window.startQuiz=function(chId){
   const pool=chId===null?Q:Q.filter(q=>q.ch===chId);
@@ -308,7 +511,131 @@ window.nextQ=function(){
   window.scrollTo(0,0);
 };
 
+window.prevQ=function(){
+  if(state.cur>0){
+    state.cur--;
+    // Show the previous question as already answered
+    const prev=state.history.filter(h=>h.idx===state.cur);
+    if(prev.length>0){
+      const last=prev[prev.length-1];
+      state.sel=last.chosen;
+      state.done=true;
+    } else {
+      state.sel=null;
+      state.done=false;
+    }
+    render();
+    window.scrollTo(0,0);
+  }
+};
+
 render();
+
+let gState={cur:0,checked:false,results:[]};
+
+window.openGrids=function(){
+  gState={cur:0,checked:false,results:[]};
+  state.mode='gridList';
+  renderGridList();
+  window.scrollTo(0,0);
+};
+window.openGrid=function(idx){
+  gState={cur:idx,checked:false,results:[]};
+  state.mode='grid';
+  renderGrid();
+  window.scrollTo(0,0);
+};
+window.checkGrid=function(){
+  const g=GRIDS[gState.cur];
+  gState.results=[];
+  g.b.forEach(bi=>{
+    const inp=document.getElementById('gi'+bi);
+    const val=(inp?inp.value:'').replace(/\s+/g,'').toUpperCase();
+    const ans=g.c[bi].replace(/\s+/g,'').toUpperCase();
+    gState.results.push({idx:bi,ok:val===ans});
+  });
+  if(g.m){
+    const lonInp=document.getElementById('gm-lon');
+    const latInp=document.getElementById('gm-lat');
+    const norm=s=>(s||'').replace(/\s+/g,'').replace(/[""'']/g,"'").replace(/[']{2}/g,'"').toLowerCase();
+    gState.coordOk=[
+      norm(lonInp?lonInp.value:'')===norm(g.m[0]),
+      norm(latInp?latInp.value:'')===norm(g.m[1])
+    ];
+  }
+  gState.checked=true;
+  renderGrid();
+};
+window.nextGrid=function(){if(gState.cur<GRIDS.length-1){gState.cur++;gState.checked=false;gState.results=[];renderGrid();window.scrollTo(0,0);}};
+window.prevGrid=function(){if(gState.cur>0){gState.cur--;gState.checked=false;gState.results=[];renderGrid();window.scrollTo(0,0);}};
+window.redoGrid=function(){gState.checked=false;gState.results=[];renderGrid();};
+
+function renderGridList(){
+  let h=`<div class="quiz-top"><button class="back-btn" onclick="goHome()">← Về</button><div class="quiz-meta"><span class="pos">${GRIDS.length} bài</span></div></div>`;
+  h+=`<div class="q-card"><div class="q-id">BÀI TẬP CHẮP GHÉP BẢN ĐỒ</div><div class="q-text">Chọn bài tập để luyện. Điền các ô trống trong lưới 3×3.</div></div>`;
+  h+=`<div class="grid-list">`;
+  GRIDS.forEach((g,i)=>{
+    const tag=g.t==='GAUSS'?'gauss':g.t==='UTM'?'utm':'vn';
+    h+=`<button class="grid-item" onclick="openGrid(${i})"><span class="gi-name">Bài ${g.id} (${g.b.length} ô trống)</span><span class="gi-tag ${tag}">${g.t}</span></button>`;
+  });
+  h+=`</div>`;
+  app.innerHTML=h;
+}
+
+function renderGrid(){
+  const g=GRIDS[gState.cur];
+  let h=`<div class="quiz-top"><button class="back-btn" onclick="openGrids()">← DS bài tập</button><div class="quiz-meta"><span class="pos">${gState.cur+1}/${GRIDS.length}</span></div></div>`;
+  h+=`<div class="bar-track"><div class="bar-fill" style="width:${((gState.cur+1)/GRIDS.length)*100}%"></div></div>`;
+  h+=`<div class="q-card"><div class="q-id">Bài ${g.id} • ${g.t}</div><div class="q-text">Hoàn thành bản chắp ghép bản đồ ${g.t}.${g.m?' Xác định tọa độ điểm M.':''} Điền ${g.b.length} ô trống:</div>`;
+  h+=`<div class="grid-wrap"><table class="map-grid">`;
+  for(let r=0;r<3;r++){
+    h+=`<tr>`;
+    for(let c=0;c<3;c++){
+      const i=r*3+c;
+      if(!g.b.includes(i)){
+        h+=`<td class="cell-given">${g.c[i]}</td>`;
+      } else if(gState.checked){
+        const res=gState.results.find(x=>x.idx===i);
+        const ok=res&&res.ok;
+        h+=ok?`<td class="cell-ok">${g.c[i]} ✓</td>`:`<td class="cell-no"><small style="color:#c0392b">✗</small><br><small style="color:#27ae60;font-weight:800">${g.c[i]}</small></td>`;
+      } else {
+        h+=`<td style="background:#fff8e1;padding:4px"><input id="gi${i}" type="text" placeholder="?" autocomplete="off" style="font-size:10px"></td>`;
+      }
+    }
+    h+=`</tr>`;
+  }
+  h+=`</table>`;
+  if(g.mp) h+=`<div class="m-point" style="top:${g.mp[0]}%;left:${g.mp[1]}%">M</div>`;
+  h+=`</div></div>`;
+  if(g.m){
+    h+=`<div class="q-card" style="margin-top:12px"><div class="q-id">Xác định tọa độ điểm M</div>`;
+    if(!gState.checked){
+      h+=`<div style="margin:8px 0"><label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">Kinh độ:</label><input id="gm-lon" type="text" placeholder="VD: 3°22\'30&quot; Tây" style="width:100%;padding:10px;border:2px solid #dcdde1;border-radius:8px;font-size:14px;font-family:inherit" autocomplete="off"></div>`;
+      h+=`<div style="margin:8px 0"><label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px">Vĩ độ:</label><input id="gm-lat" type="text" placeholder="VD: 43°15\' Bắc" style="width:100%;padding:10px;border:2px solid #dcdde1;border-radius:8px;font-size:14px;font-family:inherit" autocomplete="off"></div>`;
+    } else {
+      const lonOk=gState.coordOk&&gState.coordOk[0],latOk=gState.coordOk&&gState.coordOk[1];
+      h+=`<div style="margin:6px 0;padding:10px;border-radius:8px;background:${lonOk?'#d5f5e3':'#fadbd8'}"><strong>Kinh độ:</strong> ${lonOk?'✓':'✗'} Đáp án: <strong>${g.m[0]}</strong></div>`;
+      h+=`<div style="margin:6px 0;padding:10px;border-radius:8px;background:${latOk?'#d5f5e3':'#fadbd8'}"><strong>Vĩ độ:</strong> ${latOk?'✓':'✗'} Đáp án: <strong>${g.m[1]}</strong></div>`;
+    }
+    h+=`</div>`;
+  }
+  if(!gState.checked){
+    h+=`<button class="check-btn" onclick="checkGrid()">✓ Kiểm tra</button>`;
+  } else {
+    const ok=gState.results.filter(x=>x.ok).length,tot=g.b.length;
+    let coordOkCount=0,coordTot=0;
+    if(g.m){coordTot=2;coordOkCount=(gState.coordOk[0]?1:0)+(gState.coordOk[1]?1:0);}
+    const allOk=ok+coordOkCount,allTot=tot+coordTot;
+    const cls=allOk===allTot?'perfect':allOk>0?'partial':'bad';
+    h+=`<div class="grid-score ${cls}">${allOk}/${allTot} đúng ${allOk===allTot?'🎉':''}</div>`;
+  }
+  h+=`<div class="grid-nav">`;
+  if(gState.cur>0) h+=`<button class="prev-btn" onclick="prevGrid()">← Bài trước</button>`;
+  if(gState.checked) h+=`<button class="next-btn" onclick="redoGrid()">🔄 Làm lại</button>`;
+  if(gState.cur<GRIDS.length-1) h+=`<button class="next-btn" onclick="nextGrid()">Bài tiếp →</button>`;
+  h+=`</div>`;
+  app.innerHTML=h;
+}
 </script>
 </body>
 </html>
